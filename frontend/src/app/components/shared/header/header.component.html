@@ -1,0 +1,59 @@
+<header
+  class="h-[80px] bg-[#762124] flex justify-between items-center py-2 px-4 border-b-8 border-[#5e191b]"
+>
+  <div class="flex justify-start items-center space-x-6">
+    <img
+      class="h-[60px] w-auto"
+      src="logo_opa.png"
+      alt="Economics University of Athens logo"
+    />
+    <span class="hidden md:block text-white text-xl font-serif font-thin">
+      Coding Factory - Education Reinvented
+    </span>
+  </div>
+  <div class="grow relative z-0 flex justify-end">
+    <button
+      #dropdownToggler
+      [attr.aria-expanded]="dropDownHeaderLogoutMenu"
+      aria-controls="dropdownHeaderLogoutMenu"
+      class="flex justify-center items-center px-4 py-2 lg:space-x-4 focus:outline-none focus:ring-2 focus:ring-white focus:rounded-md group cursor-pointer"
+      (click)="clickDropdownHeaderLogoutMenu()"
+    >
+      <span
+        class="hidden lg:block text-white text-lg font-serif font-thin underline underline-offset-[6px] group-hover:decoration-2"
+      >
+        EMAIL
+      </span>
+      <span
+        class="text-white text-lg leading-none flex items-center justify-center"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="12" cy="5" r="2" />
+          <circle cx="12" cy="12" r="2" />
+          <circle cx="12" cy="19" r="2" />
+        </svg>
+      </span>
+    </button>
+    <div
+      #dropdownMenu
+      class="w-[240px] h-16 absolute z-1 top-[50px] right-0 rounded-md shadow-lg bg-white border transition-all duration-200 ease-in-out"
+      [class.hidden]="!dropDownHeaderLogoutMenu"
+    >
+      <ul>
+        <li>
+          <button
+            class="block text-[#762124] hover:text-[#5c1a1a] text-lg px-4 py-3 hover:underline focus:outline-none focus:underline cursor-pointer"
+          >
+            Έξοδος
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
