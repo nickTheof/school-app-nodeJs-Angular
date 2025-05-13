@@ -1,1 +1,73 @@
-<p>register works!</p>
+<div class="w-full md:w-[500px] md:mx-auto rounded-md p-4">
+  <div class="h-16 text-center mt-5 text-3xl font-thin">
+    <span class="block">Φόρμα Εγγραφής Νέου Χρήστη</span>
+  </div>
+  <div class="text-red-600 text-sm text-center">ERROR</div>
+  <form class="p-4">
+    <div class="flex flex-col border-b-2 mb-2 h-24">
+      <label class="text-sm font-sans font-bold mb-1" for="email">Email</label>
+      <div class="flex items-center gap-x-3">
+        <span class="text-stone-400"><i class="fa-solid fa-user"></i></span>
+        <input
+          class="grow h-10 p-2 text-sm placeholder:font-sans placeholder:text-sm focus:outline-none focus:ring focus:ring-inset-2 focus:ring-[#762124]"
+          id="email"
+          name="email"
+          type="email"
+          placeholder="Εισάγετε το email σας"
+        />
+      </div>
+      <span class="block text-red-600 text-sm"> ERROR </span>
+    </div>
+
+    <div class="flex flex-col border-b-2 mb-2 h-24">
+      <label class="text-sm font-sans font-bold mb-1" for="password"
+        >Κωδικός</label
+      >
+      <div class="flex items-center gap-x-2">
+        <span class="text-stone-400"><i class="fa-solid fa-lock"></i></span>
+        <input
+          class="grow h-10 p-2 text-sm placeholder:font-sans placeholder:text-sm focus:outline-none focus:ring focus:ring-inset-2 focus:ring-[#762124]"
+          id="password"
+          type="password"
+          name="password"
+          placeholder="Εισάγετε τον κωδικό σας"
+        />
+      </div>
+      <span class="block text-red-600 text-sm"> ERROR </span>
+    </div>
+
+    <div class="flex flex-col border-b-2 mb-2 h-24">
+      <label class="text-sm font-sans mb-1 font-bold" for="confirmPassword"
+        >Επιβεβαίωση Κωδικού</label
+      >
+      <div class="flex items-center gap-x-2">
+        <span class="text-stone-400"><i class="fa-solid fa-lock"></i></span>
+        <input
+          class="grow h-10 p-2 text-sm placeholder:font-sans placeholder:text-sm focus:outline-none focus:ring focus:ring-inset-2 focus:ring-[#762124]"
+          id="confirmPassword"
+          type="password"
+          name="confirmPassword"
+          placeholder="Επιβεβαιώστε τον κωδικό σας"
+        />
+      </div>
+      <span class="block text-red-600 text-sm"> ERROR </span>
+    </div>
+
+    <button
+      type="submit"
+      class="w-full h-9 border rounded-xl text-white text-sm font-thin bg-[#762124] hover:bg-[#5c1a1a] mt-5"
+    >
+      Εγγραφή
+    </button>
+  </form>
+
+  <div class="text-center">
+    <span class="text-base pe-1">Επιστροφή στην</span>
+    <a
+      class="text-base text-[#762124] hover:text-[#5c1a1a] hover:underline"
+      [routerLink]="['../', 'login']"
+    >
+      Σύνδεση
+    </a>
+  </div>
+</div>

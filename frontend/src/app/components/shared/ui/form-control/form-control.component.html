@@ -1,0 +1,6 @@
+<label class="text-sm font-sans font-bold mb-1" [for]="inputFieldName()">{{
+  inputFieldName()
+}}</label>
+<ng-content></ng-content>
+@if (errorInField()) {}
+<span class="block text-red-600 text-sm"> {{ errorInField() }} </span>

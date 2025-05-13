@@ -13,7 +13,12 @@ export const routes: Routes = [
     component: RegisterComponent,
   },
   {
-    path: '',
+    path: 'home',
     component: LandingComponent,
+  },
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
   },
 ];

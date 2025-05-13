@@ -5,17 +5,18 @@
   </div>
   <form class="p-4">
     <div class="flex flex-col border-b-2 mb-2">
-      <label class="text-sm font-sans font-bold mb-1" for="username">
+      <label class="text-sm font-sans font-bold mb-1" for="email">
         Email
       </label>
       <div class="flex items-center gap-x-3 mb-3">
         <span class="text-stone-400"><i class="fa-solid fa-user"></i></span>
         <input
           class="grow h-10 p-2 text-sm placeholder:font-sans placeholder:text-sm focus:outline-none focus:ring focus:ring-inset-2 focus:ring-[#762124]"
-          id="username"
-          name="username"
+          id="email"
+          name="email"
           type="email"
           placeholder="Εισάγετε το email σας"
+          autocomplete="email"
         />
       </div>
     </div>
@@ -31,6 +32,7 @@
           type="password"
           name="password"
           placeholder="Εισάγετε τον κωδικό σας"
+          autocomplete="current-password"
         />
       </div>
     </div>
@@ -50,8 +52,11 @@
     </button>
   </form>
   <div class="text-center mt-4">
-    <span class="pe-2">Δεν έχετε λογαριασμό;</span>
-    <a class="text-[#762124] hover:text-[#5c1a1a] hover:underline" href="#">
+    <span class="pe-1">Δεν έχετε λογαριασμό;</span>
+    <a
+      class="text-[#762124] hover:text-[#5c1a1a] hover:underline"
+      [routerLink]="['../', 'register']"
+    >
       Εγγραφή
     </a>
   </div>
