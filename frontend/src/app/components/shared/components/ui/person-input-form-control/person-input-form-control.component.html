@@ -1,0 +1,14 @@
+<div
+  class="flex flex-col lg:flex-row items-start lg:items-center justify-center lg:justify-start gap-y-1 lg:gap-x-3 w-[300px] lg:w-auto"
+>
+  <label [for]="inputInfo().labelId" class="font-bold text-sm w-[140px]">
+    {{ inputInfo().text }} *
+  </label>
+  <ng-content></ng-content>
+</div>
+
+@if (errorInField()) {
+<div class="text-red-600 text-sm mt-1 text-center lg:text-start">
+  <span>{{ errorInField() }}</span>
+</div>
+}

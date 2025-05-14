@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { FormControlComponent } from '../../shared/ui/form-control/form-control.component';
+import { FormControlComponent } from '../../shared/components/ui/form-control/form-control.component';
 
 @Component({
   selector: 'app-login',

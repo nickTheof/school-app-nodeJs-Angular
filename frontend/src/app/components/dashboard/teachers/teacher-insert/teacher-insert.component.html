@@ -1,0 +1,38 @@
+<div class="text-center text-black font-thin text-2xl my-10">
+  Στοιχεία Εκπαιδευτή
+</div>
+<form
+  class="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8 justify-items-center"
+>
+  @for (field of formFields; track field.labelId) {
+  <app-person-input-form-control [inputInfo]="field">
+    <input
+      [id]="field.labelId"
+      [type]="field.type"
+      class="h-12 border border-black w-[300px] px-3 py-2 text-base shadow-xl focus:outline-none focus:ring-2 focus:ring-inset-2"
+    />
+  </app-person-input-form-control>
+  }
+  <app-person-input-form-control
+    [inputInfo]="{ labelId: 'city', text: 'Πόλη' }"
+  >
+    <select
+      id="city"
+      class="bg-white w-[300px] h-10 border border-black p-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-inset-2 cursor-pointer"
+    >
+      <option value="">Επιλέξτε Πόλη</option>
+      @for (city of cities; track city.id) {
+      <option [value]="city.id">{{ city.name }}</option>
+      }
+    </select>
+  </app-person-input-form-control>
+
+  <div class="col-span-full flex justify-center">
+    <button
+      class="w-[300px] h-[50px] mb-[10px] font-medium text-white bg-[#762124] hover:bg-[#5c1a1a] cursor-pointer"
+      type="submit"
+    >
+      Υποβολή
+    </button>
+  </div>
+</form>
