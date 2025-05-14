@@ -1,0 +1,116 @@
+<!-- Mobile Menu Top Label -->
+<div class="lg:hidden bg-[#762124] py-3">
+  <div
+    class="block py-1 text-zinc-200 hover:text-[#762124] hover:bg-white transition-colors duration-100"
+  >
+    <button
+      class="flex justify-center items-center w-full px-8 pt-2 cursor-pointer"
+      type="button"
+      (click)="clickShowMobileMenu()"
+    >
+      <svg
+        id="submenu-icon"
+        class="h-5 w-5 transform transition-transform"
+        [class.rotate-180]="showMobileMenu()"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    </button>
+  </div>
+  <!-- Mobile Menu Expanded Main Subsystems -->
+  <div class="lg:hidden bg-[#762124] py-3" [class.hidden]="!showMobileMenu()">
+    <div
+      class="block py-1 text-zinc-200 hover:text-[#762124] hover:bg-white transition-colors duration-100"
+    >
+      <a class="block px-8 py-2 focus:outline-none" href="#">Αρχική</a>
+    </div>
+    <div
+      class="block py-1 text-zinc-200 hover:text-[#762124] hover:bg-white transition-colors duration-100"
+    >
+      <button
+        (click)="clickTeachersSubmenu()"
+        class="flex justify-between items-center w-full px-8 pt-2 cursor-pointer"
+        type="button"
+      >
+        <span>Μητρώο Εκπαιδευτών</span>
+        <svg
+          id="submenu-icon"
+          class="h-5 w-5 transform transition-transform"
+          [class.rotate-180]="showTeachersSubmenu()"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+      <!-- Submenu content of subsystem -->
+      <div [class.hidden]="!showTeachersSubmenu()">
+        <a
+          class="block pl-16 py-1 hover:bg-[#762124] hover:text-white transition-colors duration-100"
+          href=""
+          >Προβολή Εκπαιδευτών</a
+        >
+        <a
+          class="block pl-16 py-1 hover:bg-[#762124] hover:text-white transition-colors duration-100"
+          href=""
+          >Εισαγωγή Εκπαιδευτή</a
+        >
+      </div>
+    </div>
+    <div
+      class="block py-1 text-zinc-200 hover:text-[#762124] hover:bg-white transition-colors duration-100"
+    >
+      <button
+        (click)="clickStudentsSubmenu()"
+        class="flex justify-between items-center w-full px-8 pt-2 cursor-pointer"
+      >
+        <span>Μητρώο Μαθητών</span>
+        <svg
+          id="submenu-icon"
+          class="h-5 w-5 transform transition-transform"
+          [class.rotate-180]="showStudentsSubmenu()"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+      <!-- Submenu content of subsystem -->
+      <div [class.hidden]="!showStudentsSubmenu()">
+        <a
+          class="block pl-16 py-1 hover:bg-[#762124] hover:text-white transition-colors duration-100"
+          href=""
+          >Προβολή Μαθητών</a
+        >
+        <a
+          class="block pl-16 py-1 hover:bg-[#762124] hover:text-white transition-colors duration-100"
+          href=""
+          >Εισαγωγή Μαθητή</a
+        >
+      </div>
+    </div>
+  </div>
+</div>

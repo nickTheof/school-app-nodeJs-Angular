@@ -10,6 +10,6 @@ import { Component, input } from '@angular/core';
   },
 })
 export class FormControlComponent {
-  inputFieldName = input.required<string>();
+  inputInfo = input.required<{ labelId: string; text: string }>();
   errorInField = input<string>();
 }

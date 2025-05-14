@@ -1,6 +1,7 @@
-<label class="text-sm font-sans font-bold mb-1" [for]="inputFieldName()">{{
-  inputFieldName()
+<label class="text-sm font-sans font-bold mb-1" [for]="inputInfo().labelId">{{
+  inputInfo().text
 }}</label>
 <ng-content></ng-content>
-@if (errorInField()) {}
+@if (errorInField()) {
 <span class="block text-red-600 text-sm"> {{ errorInField() }} </span>
+}

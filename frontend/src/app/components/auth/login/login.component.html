@@ -4,10 +4,7 @@
     <span class="block text-red-600 text-lg">ERROR MESSAGE</span>
   </div>
   <form class="p-4">
-    <div class="flex flex-col border-b-2 mb-2">
-      <label class="text-sm font-sans font-bold mb-1" for="email">
-        Email
-      </label>
+    <app-form-control [inputInfo]="{ labelId: 'email', text: 'Email' }">
       <div class="flex items-center gap-x-3 mb-3">
         <span class="text-stone-400"><i class="fa-solid fa-user"></i></span>
         <input
@@ -19,11 +16,8 @@
           autocomplete="email"
         />
       </div>
-    </div>
-    <div class="flex flex-col border-b-2">
-      <label class="text-sm font-sans font-bold mb-1" for="password">
-        Password
-      </label>
+    </app-form-control>
+    <app-form-control [inputInfo]="{ labelId: 'password', text: 'Κωδικός' }">
       <div class="flex items-center gap-x-[10px] mb-[10px]">
         <span class="text-stone-400"><i class="fa-solid fa-lock"></i></span>
         <input
@@ -35,11 +29,11 @@
           autocomplete="current-password"
         />
       </div>
-    </div>
+    </app-form-control>
     <div class="flex justify-end items-center mt-3 mb-5">
       <a
         class="text-sm text-stone-600 hover:text-stone-800 hover:underline hover:decoration-solid"
-        href="#"
+        routerLink="/"
       >
         Ξεχάσατε τον κωδικό σας;
       </a>
