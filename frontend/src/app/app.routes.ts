@@ -14,6 +14,7 @@ import { StudentInsertComponent } from './components/dashboard/students/student-
 import { StudentDetailsComponent } from './components/dashboard/students/student-details/student-details.component';
 import { TeacherUpdateComponent } from './components/dashboard/teachers/teacher-update/teacher-update.component';
 import { StudentUpdateComponent } from './components/dashboard/students/student-update/student-update.component';
+import { AuthGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -31,6 +32,8 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: '',
