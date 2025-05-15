@@ -1,7 +1,7 @@
 export interface LoggedInUser {
   _id: string;
   email: string;
-  roles: 'ADMIN' | 'EDITOR' | 'USER'[];
+  roles: ('ADMIN' | 'EDITOR' | 'USER')[];
   exp: number;
 }
 

@@ -3,7 +3,7 @@ export interface User {
   firstname: string;
   lastname: string;
   isActive: boolean;
-  roles: 'ADMIN' | 'EDITOR' | 'READER'[];
+  roles: ('ADMIN' | 'EDITOR' | 'USER')[];
   _id: string;
   createdAt: string;
   updatedAt: string;

@@ -60,4 +60,8 @@ export class AuthService {
     localStorage.removeItem('access_token');
     this._token.set(null);
   }
+
+  hasAnyRole(roles: ('ADMIN' | 'EDITOR' | 'USER')[]): boolean {
+    return this.user()?.roles.some((role) => roles.includes(role)) ?? false;
+  }
 }

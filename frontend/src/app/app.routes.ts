@@ -15,6 +15,7 @@ import { StudentDetailsComponent } from './components/dashboard/students/student
 import { TeacherUpdateComponent } from './components/dashboard/teachers/teacher-update/teacher-update.component';
 import { StudentUpdateComponent } from './components/dashboard/students/student-update/student-update.component';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { RoleGuard } from './shared/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -50,6 +51,8 @@ export const routes: Routes = [
           {
             path: 'insert',
             component: TeacherInsertComponent,
+            canActivate: [RoleGuard],
+            data: { roles: ['ADMIN', 'EDITOR'] },
           },
           {
             path: 'teacher/:teacherId',
@@ -58,6 +61,8 @@ export const routes: Routes = [
           {
             path: 'teacher/:teacherId/update',
             component: TeacherUpdateComponent,
+            canActivate: [RoleGuard],
+            data: { roles: ['ADMIN', 'EDITOR'] },
           },
         ],
       },
@@ -72,6 +77,8 @@ export const routes: Routes = [
           {
             path: 'insert',
             component: StudentInsertComponent,
+            canActivate: [RoleGuard],
+            data: { roles: ['ADMIN', 'EDITOR'] },
           },
           {
             path: 'student/:studentId',
@@ -80,6 +87,8 @@ export const routes: Routes = [
           {
             path: 'student/:studentId/update',
             component: StudentUpdateComponent,
+            canActivate: [RoleGuard],
+            data: { roles: ['ADMIN', 'EDITOR'] },
           },
         ],
       },
