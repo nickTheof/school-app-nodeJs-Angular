@@ -8,6 +8,12 @@ import { TeachersComponent } from './components/dashboard/teachers/teachers.comp
 import { TeacherDetailsComponent } from './components/dashboard/teachers/teacher-details/teacher-details.component';
 import { TeachersViewComponent } from './components/dashboard/teachers/teachers-view/teachers-view.component';
 import { TeacherInsertComponent } from './components/dashboard/teachers/teacher-insert/teacher-insert.component';
+import { StudentsComponent } from './components/dashboard/students/students.component';
+import { StudentsViewComponent } from './components/dashboard/students/students-view/students-view.component';
+import { StudentInsertComponent } from './components/dashboard/students/student-insert/student-insert.component';
+import { StudentDetailsComponent } from './components/dashboard/students/student-details/student-details.component';
+import { TeacherUpdateComponent } from './components/dashboard/teachers/teacher-update/teacher-update.component';
+import { StudentUpdateComponent } from './components/dashboard/students/student-update/student-update.component';
 
 export const routes: Routes = [
   {
@@ -45,6 +51,32 @@ export const routes: Routes = [
           {
             path: 'teacher/:teacherId',
             component: TeacherDetailsComponent,
+          },
+          {
+            path: 'teacher/:teacherId/update',
+            component: TeacherUpdateComponent,
+          },
+        ],
+      },
+      {
+        path: 'students',
+        component: StudentsComponent,
+        children: [
+          {
+            path: '',
+            component: StudentsViewComponent,
+          },
+          {
+            path: 'insert',
+            component: StudentInsertComponent,
+          },
+          {
+            path: 'student/:studentId',
+            component: StudentDetailsComponent,
+          },
+          {
+            path: 'student/:studentId/update',
+            component: StudentUpdateComponent,
           },
         ],
       },

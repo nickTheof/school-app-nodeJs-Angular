@@ -4,15 +4,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-teacher-insert',
+  selector: 'app-student-insert',
   imports: [PersonInsertComponent],
-  templateUrl: './teacher-insert.component.html',
-  styleUrl: './teacher-insert.component.css',
-  host: {
-    class: 'min-h-[calc(100vh-200px)]',
-  },
+  templateUrl: './student-insert.component.html',
+  styleUrl: './student-insert.component.css',
 })
-export class TeacherInsertComponent {
+export class StudentInsertComponent {
   private location = inject(Location);
 
   form = new FormGroup({
@@ -40,10 +37,10 @@ export class TeacherInsertComponent {
     city: new FormControl<number>(1, Validators.required),
   });
 
-  formTitle = 'Στοιχεία Εκπαιδευτή';
+  formTitle = 'Στοιχεία Μαθητή';
 
   onSubmit() {
-    console.log('http:teachers', this.form);
+    console.log('http:students', this.form);
   }
 
   onClickBackwards() {

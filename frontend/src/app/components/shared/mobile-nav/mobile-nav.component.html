@@ -31,7 +31,9 @@
     <div
       class="block py-1 text-zinc-200 hover:text-[#762124] hover:bg-white transition-colors duration-100"
     >
-      <a class="block px-8 py-2 focus:outline-none" href="#">Αρχική</a>
+      <a class="block px-8 py-2 focus:outline-none" routerLink="/dashboard"
+        >Κεντρική Σελίδα</a
+      >
     </div>
     <div
       class="block py-1 text-zinc-200 hover:text-[#762124] hover:bg-white transition-colors duration-100"
@@ -63,12 +65,12 @@
       <div [class.hidden]="!showTeachersSubmenu()">
         <a
           class="block pl-16 py-1 hover:bg-[#762124] hover:text-white transition-colors duration-100"
-          href=""
+          routerLink="/dashboard/teachers"
           >Προβολή Εκπαιδευτών</a
         >
         <a
           class="block pl-16 py-1 hover:bg-[#762124] hover:text-white transition-colors duration-100"
-          href=""
+          routerLink="/dashboard/teachers/insert"
           >Εισαγωγή Εκπαιδευτή</a
         >
       </div>
@@ -102,12 +104,12 @@
       <div [class.hidden]="!showStudentsSubmenu()">
         <a
           class="block pl-16 py-1 hover:bg-[#762124] hover:text-white transition-colors duration-100"
-          href=""
+          routerLink="/dashboard/students"
           >Προβολή Μαθητών</a
         >
         <a
           class="block pl-16 py-1 hover:bg-[#762124] hover:text-white transition-colors duration-100"
-          href=""
+          routerLink="/dashboard/students/insert"
           >Εισαγωγή Μαθητή</a
         >
       </div>

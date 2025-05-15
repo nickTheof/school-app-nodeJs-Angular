@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { PersonDetailsComponent } from '../../../shared/person-details/person-details.component';
 import { Person } from '../../../../shared/interfaces/person';
+import { PersonDetailsComponent } from '../../../shared/person-details/person-details.component';
 
 @Component({
-  selector: 'app-teacher-details',
+  selector: 'app-student-details',
   imports: [PersonDetailsComponent],
-  templateUrl: './teacher-details.component.html',
-  styleUrl: './teacher-details.component.css',
+  templateUrl: './student-details.component.html',
+  styleUrl: './student-details.component.css',
 })
-export class TeacherDetailsComponent {
-  title = 'Στοιχεία Εκπαιδευτή';
+export class StudentDetailsComponent {
+  title = 'Στοιχεία Μαθητή';
 
   person: Person = {
     uuid: '1',

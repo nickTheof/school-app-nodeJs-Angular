@@ -8,5 +8,5 @@ import { Component, input } from '@angular/core';
 })
 export class PersonInputFormControlComponent {
   inputInfo = input.required<{ labelId: string; text: string }>();
-  errorInField = input<string>();
+  errorInField = input<string | null>();
 }

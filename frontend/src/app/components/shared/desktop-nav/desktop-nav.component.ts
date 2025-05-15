@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-desktop-nav',
-  imports: [],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './desktop-nav.component.html',
   styleUrl: './desktop-nav.component.css',
   host: {

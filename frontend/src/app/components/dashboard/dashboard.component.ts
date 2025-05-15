@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { MobileNavComponent } from '../shared/components/mobile-nav/mobile-nav.component';
-import { DesktopNavComponent } from '../shared/components/desktop-nav/desktop-nav.component';
+import { MobileNavComponent } from '../shared/mobile-nav/mobile-nav.component';
+import { DesktopNavComponent } from '../shared/desktop-nav/desktop-nav.component';
 import { RouterOutlet } from '@angular/router';
 
 @Component({

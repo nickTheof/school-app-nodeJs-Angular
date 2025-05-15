@@ -1,0 +1,85 @@
+<div
+  class="w-2/3 mx-auto bg-white shadow-md rounded-xl p-6 border border-gray-200"
+>
+  <h2 class="text-center text-2xl font-serif font-semibold text-[#762124] mb-6">
+    {{ title() }}
+  </h2>
+
+  @if (!personData()) {
+  <div class="flex justify-center my-6">
+    <div
+      class="w-[90%] md:w-2/3 lg:w-1/2 bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md flex items-start gap-3"
+    >
+      <svg
+        class="w-6 h-6 text-red-500 mt-1 shrink-0"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M12 9v2m0 4h.01M12 5C7.58 5 4 8.58 4 13s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z"
+        />
+      </svg>
+      <div class="text-sm">
+        <strong class="block font-semibold">Σφάλμα!</strong>
+        <span>Δεν βρέθηκε καταχωρημένο άτομο με το ζητούμενο uuid.</span>
+      </div>
+    </div>
+  </div>
+  }
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-base text-gray-800">
+    <div class="flex flex-col">
+      <span class="font-semibold text-[#762124]">UUID</span>
+      <span>{{ personData()?.uuid }}</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-semibold text-[#762124]">Όνομα</span>
+      <span>{{ personData()?.firstname }}</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-semibold text-[#762124]">Επώνυμο</span>
+      <span>{{ personData()?.lastname }}</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-semibold text-[#762124]">ΑΦΜ</span>
+      <span>{{ personData()?.vat }}</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-semibold text-[#762124]">Όνομα Πατρός</span>
+      <span>{{ personData()?.fathername }}</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-semibold text-[#762124]">Τηλέφωνο</span>
+      <span>{{ personData()?.phoneNum }}</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-semibold text-[#762124]">Email</span>
+      <span>{{ personData()?.email }}</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-semibold text-[#762124]">Πόλη</span>
+      @for (city of cities(); track city.id) { @if (personData()?.cityId ==
+      city.id) {
+      <span>{{ city.name }}</span>
+      } }
+    </div>
+    <div class="flex flex-col">
+      <span class="font-semibold text-[#762124]">ΤΚ</span>
+      <span>{{ personData()?.zipcode }}</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-semibold text-[#762124]">Διεύθυνση</span>
+      <span>{{ personData()?.address }}</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-semibold text-[#762124]">Αριθμός</span>
+      <span>{{ personData()?.streetNum }}</span>
+    </div>
+  </div>
+</div>
+<div class="flex justify-start mt-6">
+  <app-back-button (clickedBackwards)="onclickBackwards()"></app-back-button>
+</div>

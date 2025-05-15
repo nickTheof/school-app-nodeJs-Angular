@@ -1,0 +1,80 @@
+<div class="text-center text-black font-thin text-2xl my-10">
+  {{ formTitle() }}
+</div>
+
+@if (!personDetails()?.uuid) {
+<div class="flex justify-center my-6">
+  <div
+    class="w-[90%] md:w-2/3 lg:w-1/2 bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md flex items-start gap-3"
+  >
+    <svg
+      class="w-6 h-6 text-red-500 mt-1 shrink-0"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path
+        d="M12 9v2m0 4h.01M12 5C7.58 5 4 8.58 4 13s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z"
+      />
+    </svg>
+    <div class="text-sm">
+      <strong class="block font-semibold">Σφάλμα!</strong>
+      <span>Δεν βρέθηκε καταχωρημένο άτομο με το ζητούμενο uuid.</span>
+    </div>
+  </div>
+</div>
+}
+<form
+  [formGroup]="formGroup()"
+  class="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8 justify-items-center"
+>
+  @for (field of formFields; track field.labelId) {
+  <app-person-input-form-control
+    [inputInfo]="field"
+    [errorInField]="getError(field.labelId)"
+  >
+    <input
+      [formControlName]="field.labelId"
+      [id]="field.labelId"
+      [type]="field.type"
+      [value]="getPersonDetailsField(field.labelId)"
+      class="h-12 border border-black w-[300px] px-3 py-2 text-base shadow-xl focus:outline-none focus:ring-2 focus:ring-inset-2"
+    />
+  </app-person-input-form-control>
+  }
+  <app-person-input-form-control
+    [inputInfo]="{ labelId: 'city', text: 'Πόλη' }"
+    [errorInField]="getError('city')"
+  >
+    <select
+      formControlName="city"
+      id="city"
+      class="bg-white w-[300px] h-10 border border-black p-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-inset-2 cursor-pointer"
+    >
+      <option value="">Επιλέξτε Πόλη</option>
+      @for (city of cities(); track city.id) {
+      <option
+        [value]="city.id"
+        [selected]="city.id === getPersonDetailsField('cityId')"
+      >
+        {{ city.name }}
+      </option>
+      }
+    </select>
+  </app-person-input-form-control>
+
+  <div class="col-span-full flex flex-col justify-center items-center gap-y-4">
+    <button
+      class="w-[300px] h-[50px] mb-[10px] font-medium text-white bg-[#762124] hover:bg-[#5c1a1a] cursor-pointer"
+      type="submit"
+      (click)="onClickSubmit()"
+      [disabled]="formGroup().invalid"
+    >
+      Ενημέρωση
+    </button>
+    <app-back-button (clickedBackwards)="onClickBackwards()"></app-back-button>
+  </div>
+</form>

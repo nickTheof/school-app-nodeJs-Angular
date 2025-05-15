@@ -1,8 +1,9 @@
 import { Component, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-mobile-nav',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './mobile-nav.component.html',
   styleUrl: './mobile-nav.component.css',
 })

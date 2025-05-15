@@ -1,0 +1,60 @@
+<nav class="text-lg">
+  <ul class="flex flex-col mt-[30px] ps-5 gap-y-2">
+    <li>
+      <a
+        routerLink="/dashboard"
+        routerLinkActive="text-yellow-400"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="block text-white hover:text-yellow-400"
+        href=""
+        >Κεντρική Σελίδα</a
+      >
+    </li>
+    <li class="text-white">
+      Μητρώο Εκπαιδευτών
+      <ul class="ps-3 text-base">
+        <li>
+          <a
+            routerLink="/dashboard/teachers"
+            routerLinkActive="text-yellow-400"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="block text-white hover:text-yellow-400"
+            >Προβολή Εκπαιδευτών</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/dashboard/teachers/insert"
+            routerLinkActive="text-yellow-400"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="block text-white hover:text-yellow-400"
+            >Εισαγωγή Εκπαιδευτή</a
+          >
+        </li>
+      </ul>
+    </li>
+    <li class="text-white">
+      Μητρώο Μαθητών
+      <ul class="ps-3 text-base">
+        <li>
+          <a
+            routerLink="/dashboard/students"
+            routerLinkActive="text-yellow-400"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="block text-white hover:text-yellow-400"
+            >Προβολή Μαθητών</a
+          >
+        </li>
+        <li>
+          <a
+            routerLink="/dashboard/students/insert"
+            routerLinkActive="text-yellow-400"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="block text-white hover:text-yellow-400"
+            >Εισαγωγή Μαθητή</a
+          >
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
