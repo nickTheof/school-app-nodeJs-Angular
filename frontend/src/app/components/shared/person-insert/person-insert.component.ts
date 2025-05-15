@@ -4,6 +4,7 @@ import { CityService } from '../../../shared/services/city.service';
 import { PersonInputFormControlComponent } from '../person-input-form-control/person-input-form-control.component';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BackButtonComponent } from '../back-button/back-button.component';
+import { getError } from '../../../shared/utils/field.validator';
 
 @Component({
   selector: 'app-person-insert',
@@ -25,16 +26,7 @@ export class PersonInsertComponent {
   private cityService = inject(CityService);
   cities = this.cityService.cities;
 
-  getError(controlName: string): string | null {
-    const control = this.formGroup().get(controlName);
-    if (control && control.touched && control.invalid) {
-      if (control.errors?.['required'])
-        return 'Αυτό το πεδίο είναι υποχρεωτικό';
-      if (control.errors?.['pattern']) return 'Μη έγκυρη μορφή';
-      if (control.errors?.['email']) return 'Μη έγκυρη μορφή email';
-    }
-    return null;
-  }
+  getError = getError;
 
   onClickSubmit() {
     this.clickedSubmit.emit();

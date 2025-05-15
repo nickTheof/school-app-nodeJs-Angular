@@ -8,7 +8,7 @@
   @for (field of formFields; track field.labelId) {
   <app-person-input-form-control
     [inputInfo]="field"
-    [errorInField]="getError(field.labelId)"
+    [errorInField]="getError(formGroup(), field.labelId)"
   >
     <input
       [formControlName]="field.labelId"
@@ -20,7 +20,7 @@
   }
   <app-person-input-form-control
     [inputInfo]="{ labelId: 'city', text: 'Πόλη' }"
-    [errorInField]="getError('city')"
+    [errorInField]="getError(formGroup(), 'city')"
   >
     <select
       formControlName="city"
