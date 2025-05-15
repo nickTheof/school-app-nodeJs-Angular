@@ -1,5 +1,6 @@
-import { Component, ElementRef, viewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, ElementRef, inject, viewChild } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -11,6 +12,10 @@ import { RouterLink } from '@angular/router';
   },
 })
 export class HeaderComponent {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  user = this.authService.user;
   dropDownHeaderLogoutMenu = false;
 
   dropdownToggler = viewChild<ElementRef<HTMLButtonElement>>('dropdownToggler');
@@ -30,5 +35,10 @@ export class HeaderComponent {
     ) {
       this.dropDownHeaderLogoutMenu = false;
     }
+  }
+
+  onLogout() {
+    this.authService.clearCredentials();
+    this.router.navigate([''], { replaceUrl: true });
   }
 }

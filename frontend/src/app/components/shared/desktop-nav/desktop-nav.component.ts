@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-desktop-nav',
@@ -10,4 +11,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     class: 'hidden lg:block w-1/5 min-h-[calc(100vh-200px)] bg-[#762124]',
   },
 })
-export class DesktopNavComponent {}
+export class DesktopNavComponent {
+  private authService = inject(AuthService);
+  isAdminOrEditor = this.authService.isAdminOrEditor();
+}

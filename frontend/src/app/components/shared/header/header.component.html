@@ -13,6 +13,7 @@
       Coding Factory - Education Reinvented
     </span>
   </div>
+  @if (user()) {
   <div class="grow relative z-0 flex justify-end">
     <button
       #dropdownToggler
@@ -24,7 +25,7 @@
       <span
         class="hidden lg:block text-white text-lg font-serif font-thin underline underline-offset-[6px] group-hover:decoration-2"
       >
-        EMAIL
+        {{ user()?.email }}
       </span>
       <span
         class="text-white text-lg leading-none flex items-center justify-center"
@@ -50,6 +51,8 @@
       <ul>
         <li>
           <button
+            (click)="onLogout()"
+            type="button"
             class="block text-[#762124] hover:text-[#5c1a1a] text-lg px-4 py-3 hover:underline focus:outline-none focus:underline cursor-pointer"
           >
             Έξοδος
@@ -58,4 +61,5 @@
       </ul>
     </div>
   </div>
+  }
 </header>

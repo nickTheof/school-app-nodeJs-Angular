@@ -13,7 +13,9 @@ const API_AUTH_BASE_URL = 'http://localhost:3000/api/v1/auth';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private _token = signal<string | null>(localStorage.getItem('access_token'));
+  private _token = signal<string | null>(
+    sessionStorage.getItem('access_token')
+  );
 
   user = computed(() => {
     const token = this._token();
@@ -39,7 +41,7 @@ export class AuthService {
       .pipe(
         tap((resp) => {
           this._token.set(resp.data);
-          localStorage.setItem('access_token', resp.data);
+          sessionStorage.setItem('access_token', resp.data);
         })
       );
   }
@@ -57,11 +59,15 @@ export class AuthService {
   }
 
   clearCredentials() {
-    localStorage.removeItem('access_token');
+    sessionStorage.removeItem('access_token');
     this._token.set(null);
   }
 
   hasAnyRole(roles: ('ADMIN' | 'EDITOR' | 'USER')[]): boolean {
     return this.user()?.roles.some((role) => roles.includes(role)) ?? false;
+  }
+
+  isAdminOrEditor(): boolean {
+    return this.hasAnyRole(['ADMIN', 'EDITOR']);
   }
 }

@@ -22,6 +22,7 @@
             >Προβολή Εκπαιδευτών</a
           >
         </li>
+        @if (isAdminOrEditor) {
         <li>
           <a
             routerLink="/dashboard/teachers/insert"
@@ -31,6 +32,7 @@
             >Εισαγωγή Εκπαιδευτή</a
           >
         </li>
+        }
       </ul>
     </li>
     <li class="text-white">
@@ -45,6 +47,7 @@
             >Προβολή Μαθητών</a
           >
         </li>
+        @if (isAdminOrEditor) {
         <li>
           <a
             routerLink="/dashboard/students/insert"
@@ -54,6 +57,7 @@
             >Εισαγωγή Μαθητή</a
           >
         </li>
+        }
       </ul>
     </li>
   </ul>
