@@ -1,30 +1,39 @@
 <div class="w-full md:w-[500px] md:mx-auto p-4 rounded-md">
+  @if (isLoading()) {
+  <app-loading-spinner></app-loading-spinner>
+  }
   <div class="h-16 text-center text-3xl font-thin mt-5">
     <span class="block">Είσοδος</span>
-    <span class="block text-red-600 text-lg">ERROR MESSAGE</span>
+    @if (error()) {
+    <span class="block text-red-600 text-base">{{ error() }}</span>
+    }
   </div>
-  <form class="p-4">
-    <app-form-control [inputInfo]="{ labelId: 'email', text: 'Email' }">
+  <form [formGroup]="form" class="p-4">
+    <app-form-control
+      [inputInfo]="{ labelId: 'email', text: 'Email' }"
+      [errorInField]="getErrors(form, 'email')"
+    >
       <div class="flex items-center gap-x-3 mb-3">
         <span class="text-stone-400"><i class="fa-solid fa-user"></i></span>
         <input
           class="grow h-10 p-2 text-sm placeholder:font-sans placeholder:text-sm focus:outline-none focus:ring focus:ring-inset-2 focus:ring-[#762124]"
-          id="email"
-          name="email"
+          formControlName="email"
           type="email"
           placeholder="Εισάγετε το email σας"
           autocomplete="email"
         />
       </div>
     </app-form-control>
-    <app-form-control [inputInfo]="{ labelId: 'password', text: 'Κωδικός' }">
+    <app-form-control
+      [inputInfo]="{ labelId: 'password', text: 'Κωδικός' }"
+      [errorInField]="getErrors(form, 'password')"
+    >
       <div class="flex items-center gap-x-[10px] mb-[10px]">
         <span class="text-stone-400"><i class="fa-solid fa-lock"></i></span>
         <input
           class="grow h-10 p-2 text-sm placeholder:font-sans placeholder:text-sm focus:outline-none focus:ring focus:ring-inset-2 focus:ring-[#762124]"
-          id="password"
+          formControlName="password"
           type="password"
-          name="password"
           placeholder="Εισάγετε τον κωδικό σας"
           autocomplete="current-password"
         />
@@ -39,8 +48,10 @@
       </a>
     </div>
     <button
+      (click)="login()"
       type="submit"
-      class="w-full h-9 border rounded-xl text-white text-sm font-thin bg-[#762124] hover:bg-[#5c1a1a] cursor-pointer"
+      class="w-full h-9 border rounded-xl text-white text-sm font-thin bg-[#762124] hover:bg-[#5c1a1a] cursor-pointer disabled:cursor-not-allowed"
+      [disabled]="form.invalid"
     >
       Είσοδος
     </button>
