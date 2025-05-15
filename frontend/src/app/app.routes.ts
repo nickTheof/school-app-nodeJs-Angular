@@ -16,6 +16,8 @@ import { TeacherUpdateComponent } from './components/dashboard/teachers/teacher-
 import { StudentUpdateComponent } from './components/dashboard/students/student-update/student-update.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { RoleGuard } from './shared/guards/role.guard';
+import { NotFoundPageComponent } from './components/shared/not-found-page/not-found-page.component';
+import { UnauthorizedComponent } from './components/shared/unauthorized/unauthorized.component';
 
 export const routes: Routes = [
   {
@@ -30,6 +32,15 @@ export const routes: Routes = [
     path: 'home',
     component: LandingComponent,
   },
+  {
+    path: 'page-not-found',
+    component: NotFoundPageComponent,
+  },
+  {
+    path: 'unauthorized',
+    component: UnauthorizedComponent,
+  },
+
   {
     path: 'dashboard',
     component: DashboardComponent,
@@ -97,6 +108,11 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'page-not-found',
     pathMatch: 'full',
   },
 ];
