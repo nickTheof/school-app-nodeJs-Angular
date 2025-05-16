@@ -1,61 +1,87 @@
+@if (isLoading()) {
+<app-loading-spinner></app-loading-spinner>
+}
 <div class="w-full md:w-[500px] md:mx-auto rounded-md p-4">
   <div class="h-16 text-center mt-5 text-3xl font-thin">
     <span class="block">Φόρμα Εγγραφής Νέου Χρήστη</span>
   </div>
-  <div class="text-red-600 text-sm text-center">ERROR</div>
-  <form class="p-4">
-    <div class="flex flex-col border-b-2 mb-2 h-24">
-      <label class="text-sm font-sans font-bold mb-1" for="email">Email</label>
+  @if (error()) {
+  <app-error-card
+    [error]="{ title: 'Σφάλμα!', description: error() }"
+  ></app-error-card>
+  }
+  <form [formGroup]="form" class="p-4">
+    <app-form-control
+      [inputInfo]="{ labelId: 'email', text: 'Email' }"
+      [errorInField]="getErrors(form, 'email')"
+    >
       <div class="flex items-center gap-x-3">
         <span class="text-stone-400"><i class="fa-solid fa-user"></i></span>
         <input
           class="grow h-10 p-2 text-sm placeholder:font-sans placeholder:text-sm focus:outline-none focus:ring focus:ring-inset-2 focus:ring-[#762124]"
           id="email"
-          name="email"
+          formControlName="email"
           type="email"
           placeholder="Εισάγετε το email σας"
         />
       </div>
-      <span class="block text-red-600 text-sm"> ERROR </span>
-    </div>
+    </app-form-control>
 
-    <div class="flex flex-col border-b-2 mb-2 h-24">
-      <label class="text-sm font-sans font-bold mb-1" for="password"
-        >Κωδικός</label
-      >
+    <app-form-control
+      [inputInfo]="{ labelId: 'password', text: 'Password' }"
+      [errorInField]="getErrors(form, 'password')"
+    >
       <div class="flex items-center gap-x-2">
+        <span
+          class="tooltip relative inline-block cursor-pointer text-base ml-1 text-[#762124] group"
+          tabindex="0"
+        >
+          ⓘ
+          <span
+            class="tooltip-text invisible w-[220px] bg-[#333] text-white text-left rounded-sm p-2.5 absolute z-1 top-full left-0 mt-1 text-sm/6 group-hover:visible"
+          >
+            Ο κωδικός πρέπει να περιλαμβάνει τουλάχιστον:
+            <ul>
+              <li>Οκτώ χαρακτήρες</li>
+              <li>Ένα κεφαλαίο γράμμα</li>
+              <li>Ένα πεζό γράμμα</li>
+              <li>Έναν αριθμό</li>
+              <li>Έναν ειδικό χαρακτήρα</li>
+            </ul>
+          </span>
+        </span>
         <span class="text-stone-400"><i class="fa-solid fa-lock"></i></span>
         <input
           class="grow h-10 p-2 text-sm placeholder:font-sans placeholder:text-sm focus:outline-none focus:ring focus:ring-inset-2 focus:ring-[#762124]"
           id="password"
+          formControlName="password"
           type="password"
-          name="password"
           placeholder="Εισάγετε τον κωδικό σας"
         />
       </div>
-      <span class="block text-red-600 text-sm"> ERROR </span>
-    </div>
+    </app-form-control>
 
-    <div class="flex flex-col border-b-2 mb-2 h-24">
-      <label class="text-sm font-sans mb-1 font-bold" for="confirmPassword"
-        >Επιβεβαίωση Κωδικού</label
-      >
+    <app-form-control
+      [inputInfo]="{ labelId: 'confirmPassword', text: 'Επιβεβαίωση Κωδικού' }"
+      [errorInField]="getErrors(form, 'confirmPassword')"
+    >
       <div class="flex items-center gap-x-2">
         <span class="text-stone-400"><i class="fa-solid fa-lock"></i></span>
         <input
           class="grow h-10 p-2 text-sm placeholder:font-sans placeholder:text-sm focus:outline-none focus:ring focus:ring-inset-2 focus:ring-[#762124]"
           id="confirmPassword"
           type="password"
-          name="confirmPassword"
+          formControlName="confirmPassword"
           placeholder="Επιβεβαιώστε τον κωδικό σας"
         />
       </div>
-      <span class="block text-red-600 text-sm"> ERROR </span>
-    </div>
+    </app-form-control>
 
     <button
+      (click)="onRegisterUser()"
       type="submit"
-      class="w-full h-9 border rounded-xl text-white text-sm font-thin bg-[#762124] hover:bg-[#5c1a1a] mt-5 cursor-pointer"
+      class="w-full h-9 border rounded-xl text-white text-sm font-thin bg-[#762124] hover:bg-[#5c1a1a] mt-5 cursor-pointer disabled:cursor-not-allowed"
+      [disabled]="form.invalid"
     >
       Εγγραφή
     </button>

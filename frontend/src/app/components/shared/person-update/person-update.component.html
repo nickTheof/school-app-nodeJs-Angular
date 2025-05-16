@@ -3,6 +3,13 @@
 </div>
 
 @if (!personDetails()?.uuid) {
+<app-error-card
+  [error]="{
+    title: 'Σφάλμα!',
+    description: 'Δεν βρέθηκε καταχωρημένο άτομο με το ζητούμενο uuid.'
+  }"
+></app-error-card>
+
 <div class="flex justify-center my-6">
   <div
     class="w-[90%] md:w-2/3 lg:w-1/2 bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md flex items-start gap-3"

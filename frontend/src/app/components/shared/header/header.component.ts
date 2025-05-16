@@ -39,6 +39,6 @@ export class HeaderComponent {
 
   onLogout() {
     this.authService.clearCredentials();
-    this.router.navigate([''], { replaceUrl: true });
+    this.router.navigate(['/home'], { replaceUrl: true });
   }
 }

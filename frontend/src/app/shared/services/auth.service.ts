@@ -13,9 +13,7 @@ const API_AUTH_BASE_URL = 'http://localhost:3000/api/v1/auth';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private _token = signal<string | null>(
-    sessionStorage.getItem('access_token')
-  );
+  private _token = signal<string | null>(localStorage.getItem('access_token'));
 
   user = computed(() => {
     const token = this._token();
@@ -41,7 +39,7 @@ export class AuthService {
       .pipe(
         tap((resp) => {
           this._token.set(resp.data);
-          sessionStorage.setItem('access_token', resp.data);
+          localStorage.setItem('access_token', resp.data);
         })
       );
   }
@@ -53,13 +51,17 @@ export class AuthService {
     });
   }
 
-  isTokenExpired(token: string) {
-    const decoded = jwtDecode<{ exp: number }>(token);
-    return decoded.exp * 1000 < Date.now();
+  isTokenExpired(token: string | null) {
+    if (token) {
+      const decoded = jwtDecode<{ exp: number }>(token);
+      return decoded.exp * 1000 < Date.now();
+    } else {
+      return false;
+    }
   }
 
   clearCredentials() {
-    sessionStorage.removeItem('access_token');
+    localStorage.removeItem('access_token');
     this._token.set(null);
   }
 

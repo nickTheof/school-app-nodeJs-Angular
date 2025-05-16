@@ -6,6 +6,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Person } from '../../../shared/interfaces/person';
 import { BackButtonComponent } from '../back-button/back-button.component';
 import { getError } from '../../../shared/utils/field.validator';
+import { ErrorCardComponent } from '../error-card/error-card.component';
 
 @Component({
   selector: 'app-person-update',
@@ -13,6 +14,7 @@ import { getError } from '../../../shared/utils/field.validator';
     PersonInputFormControlComponent,
     ReactiveFormsModule,
     BackButtonComponent,
+    ErrorCardComponent,
   ],
   templateUrl: './person-update.component.html',
   styleUrl: './person-update.component.css',

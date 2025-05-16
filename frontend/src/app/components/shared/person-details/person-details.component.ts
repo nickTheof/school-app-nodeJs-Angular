@@ -3,10 +3,11 @@ import { Location } from '@angular/common';
 import { CityService } from '../../../shared/services/city.service';
 import { Person } from '../../../shared/interfaces/person';
 import { BackButtonComponent } from '../back-button/back-button.component';
+import { ErrorCardComponent } from '../error-card/error-card.component';
 
 @Component({
   selector: 'app-person-details',
-  imports: [BackButtonComponent],
+  imports: [BackButtonComponent, ErrorCardComponent],
   templateUrl: './person-details.component.html',
   styleUrl: './person-details.component.css',
   host: {

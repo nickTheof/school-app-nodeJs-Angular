@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  token = this.authService.token();
+  token = this.authService.token;
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   private checkAccess(url: string): boolean {
-    if (this.token && !this.authService.isTokenExpired(this.token)) {
+    if (this.token() && !this.authService.isTokenExpired(this.token())) {
       return true;
     } else {
       this.authService.clearCredentials();

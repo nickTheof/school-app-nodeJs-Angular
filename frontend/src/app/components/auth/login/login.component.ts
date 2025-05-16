@@ -1,11 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  effect,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormControlComponent } from '../../shared/form-control/form-control.component';
 import {
@@ -18,6 +11,7 @@ import { getError } from '../../../shared/utils/field.validator';
 import { Credentials } from '../../../shared/interfaces/auth';
 import { AuthService } from '../../../shared/services/auth.service';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
+import { ErrorCardComponent } from '../../shared/error-card/error-card.component';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +20,7 @@ import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-sp
     FormControlComponent,
     ReactiveFormsModule,
     LoadingSpinnerComponent,
+    ErrorCardComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',

@@ -1,12 +1,14 @@
 <div class="w-full md:w-[500px] md:mx-auto p-4 rounded-md">
   @if (isLoading()) {
   <app-loading-spinner></app-loading-spinner>
+  } @if (error()) {
+  <app-error-card
+    [error]="{ title: 'Σφάλμα!', description: error() }"
+  ></app-error-card>
+
   }
   <div class="h-16 text-center text-3xl font-thin mt-5">
     <span class="block">Είσοδος</span>
-    @if (error()) {
-    <span class="block text-red-600 text-base">{{ error() }}</span>
-    }
   </div>
   <form [formGroup]="form" class="p-4">
     <app-form-control
