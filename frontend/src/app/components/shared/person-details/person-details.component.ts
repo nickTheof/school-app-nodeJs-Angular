@@ -4,6 +4,7 @@ import { CityService } from '../../../shared/services/city.service';
 import { Person } from '../../../shared/interfaces/person';
 import { BackButtonComponent } from '../back-button/back-button.component';
 import { ErrorCardComponent } from '../error-card/error-card.component';
+import { INPUT_FORM_FIELDS } from '../person-insert/insert-input-form-fields';
 
 @Component({
   selector: 'app-person-details',
@@ -22,6 +23,11 @@ export class PersonDetailsComponent {
 
   title = input.required<string>();
   personData = input.required<Person | undefined>();
+  personFields = INPUT_FORM_FIELDS;
+
+  getPersonDetailsField(controlName: keyof Person) {
+    return this.personData()?.[controlName];
+  }
 
   onclickBackwards() {
     this.location.back();

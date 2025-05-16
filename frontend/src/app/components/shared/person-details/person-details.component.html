@@ -18,51 +18,21 @@
       <span class="font-semibold text-[#762124]">UUID</span>
       <span>{{ personData()?.uuid }}</span>
     </div>
+    @for (field of personFields; track field.labelId) {
     <div class="flex flex-col">
-      <span class="font-semibold text-[#762124]">Όνομα</span>
-      <span>{{ personData()?.firstname }}</span>
+      <span class="font-semibold text-[#762124]">{{ field.text }}</span>
+      <span>{{ getPersonDetailsField(field.labelId) }}</span>
     </div>
-    <div class="flex flex-col">
-      <span class="font-semibold text-[#762124]">Επώνυμο</span>
-      <span>{{ personData()?.lastname }}</span>
-    </div>
-    <div class="flex flex-col">
-      <span class="font-semibold text-[#762124]">ΑΦΜ</span>
-      <span>{{ personData()?.vat }}</span>
-    </div>
-    <div class="flex flex-col">
-      <span class="font-semibold text-[#762124]">Όνομα Πατρός</span>
-      <span>{{ personData()?.fathername }}</span>
-    </div>
-    <div class="flex flex-col">
-      <span class="font-semibold text-[#762124]">Τηλέφωνο</span>
-      <span>{{ personData()?.phoneNum }}</span>
-    </div>
-    <div class="flex flex-col">
-      <span class="font-semibold text-[#762124]">Email</span>
-      <span>{{ personData()?.email }}</span>
-    </div>
+    }
     <div class="flex flex-col">
       <span class="font-semibold text-[#762124]">Πόλη</span>
-      @for (city of cities(); track city.id) { @if (personData()?.cityId ==
-      city.id) {
+      @for (city of cities(); track city.id) { @if (personData()?.cityId
+      ==city.id) {
       <span>{{ city.name }}</span>
       } }
     </div>
-    <div class="flex flex-col">
-      <span class="font-semibold text-[#762124]">ΤΚ</span>
-      <span>{{ personData()?.zipcode }}</span>
-    </div>
-    <div class="flex flex-col">
-      <span class="font-semibold text-[#762124]">Διεύθυνση</span>
-      <span>{{ personData()?.address }}</span>
-    </div>
-    <div class="flex flex-col">
-      <span class="font-semibold text-[#762124]">Αριθμός</span>
-      <span>{{ personData()?.streetNum }}</span>
-    </div>
   </div>
-</div>
-<div class="flex justify-start mt-6">
-  <app-back-button (clickedBackwards)="onclickBackwards()"></app-back-button>
+  <div class="flex items-center justify-center mt-6">
+    <app-back-button (clickedBackwards)="onclickBackwards()"></app-back-button>
+  </div>
 </div>
