@@ -8,6 +8,7 @@ exports.verifyToken = (req, res, next) => {
     return next(new AppError("Access denied. No token provided", 401));
   }
   const credentials = authService.verifyAccessToken(token);
+  console.log(credentials);
   if (!credentials.verified) {
     return next(new AppError(credentials.data, 403));
   }

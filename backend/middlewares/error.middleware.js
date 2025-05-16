@@ -14,6 +14,13 @@ function normalizeError(err) {
 }
 
 // Handle mongoose Cast Errors
+const handleDuplicateFieldsDB = (err) => {
+  const field = Object.keys(err.keyValue)[0];
+  const message = `Duplicate field value: "${err.keyValue[field]}". Please use another value!`;
+  return new AppError(message, 400);
+};
+
+// Handle mongoose Cast Errors
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}`;
   return new AppError(message, 400);
@@ -73,6 +80,10 @@ const errorController = (err, req, res, next) => {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === "production") {
     let error = normalizeError(err);
+
+    if (error.code === 11000) {
+      error = handleDuplicateFieldsDB(error);
+    }
 
     if (error.name === "CastError") {
       error = handleCastErrorDB(error);

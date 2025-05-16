@@ -25,6 +25,7 @@ function verifyAccessToken(token) {
       data: payload,
     };
   } catch (err) {
+    console.log(err);
     return {
       verified: false,
       data: err.message,

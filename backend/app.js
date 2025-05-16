@@ -7,6 +7,7 @@ const limiter = require("./middlewares/limiter.middleware");
 const AppError = require("./utils/AppError");
 const userRouter = require("./routes/user.routes");
 const authRouter = require("./routes/auth.routes");
+const cityRouter = require("./routes/city.routes");
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use(
 app.use("/", limiter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/cities", cityRouter);
 
 app.all("/{*splat}", (req, res, next) => {
   next(new AppError(`Can't find the ${req.originalUrl} on the server`, 404));
