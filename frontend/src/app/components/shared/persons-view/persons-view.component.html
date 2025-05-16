@@ -54,6 +54,7 @@
           >
             <i class="fa-solid fa-eye"></i>
           </a>
+          @if (isAdminOrReader) {
           <a
             [routerLink]="['/dashboard', `${person.entity}s`, person.entity , person.uuid, 'update']"
             class="text-green-500"
@@ -64,6 +65,7 @@
           <a class="text-red-500">
             <i class="fa fa-trash"></i>
           </a>
+          }
         </td>
       </tr>
       }
