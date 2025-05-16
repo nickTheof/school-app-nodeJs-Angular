@@ -8,3 +8,11 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface UserInsertDTO {
+  email: string;
+  firstname: string;
+  lastname: string;
+  password: string;
+  confirmPassword: string;
+}

@@ -1,10 +1,13 @@
 @if (isLoading()) {
 <app-loading-spinner></app-loading-spinner>
-}
+} @if (success()) {
+<app-success-card title="Επιτυχής Εγγραφή"></app-success-card>
+} @else {
 <div class="w-full md:w-[500px] md:mx-auto rounded-md p-4">
   <div class="h-16 text-center mt-5 text-3xl font-thin">
     <span class="block">Φόρμα Εγγραφής Νέου Χρήστη</span>
   </div>
+
   @if (error()) {
   <app-error-card
     [error]="{ title: 'Σφάλμα!', description: error() }"
@@ -23,6 +26,38 @@
           formControlName="email"
           type="email"
           placeholder="Εισάγετε το email σας"
+        />
+      </div>
+    </app-form-control>
+
+    <app-form-control
+      [inputInfo]="{ labelId: 'firstname', text: 'Όνομα' }"
+      [errorInField]="getErrors(form, 'firstname')"
+    >
+      <div class="flex items-center gap-x-3">
+        <span class="text-stone-400"><i class="fa-solid fa-user"></i></span>
+        <input
+          class="grow h-10 p-2 text-sm placeholder:font-sans placeholder:text-sm focus:outline-none focus:ring focus:ring-inset-2 focus:ring-[#762124]"
+          id="firstname"
+          formControlName="firstname"
+          type="text"
+          placeholder="Εισάγετε το όνομά σας"
+        />
+      </div>
+    </app-form-control>
+
+    <app-form-control
+      [inputInfo]="{ labelId: 'lastname', text: 'Επώνυμο' }"
+      [errorInField]="getErrors(form, 'lastname')"
+    >
+      <div class="flex items-center gap-x-3">
+        <span class="text-stone-400"><i class="fa-solid fa-user"></i></span>
+        <input
+          class="grow h-10 p-2 text-sm placeholder:font-sans placeholder:text-sm focus:outline-none focus:ring focus:ring-inset-2 focus:ring-[#762124]"
+          id="lastname"
+          formControlName="lastname"
+          type="text"
+          placeholder="Εισάγετε το επώνυμό σας"
         />
       </div>
     </app-form-control>
@@ -86,7 +121,10 @@
       Εγγραφή
     </button>
   </form>
+</div>
 
+}
+<div class="w-full md:w-[500px] md:mx-auto rounded-md p-4">
   <div class="text-center">
     <span class="text-base pe-1">Επιστροφή στην</span>
     <a
