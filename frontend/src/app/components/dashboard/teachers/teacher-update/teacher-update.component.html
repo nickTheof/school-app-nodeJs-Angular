@@ -1,7 +1,10 @@
+@if (formReady) {
 <app-person-update
   [formTitle]="formTitle"
-  [personDetails]="teacher"
+  [personDetails]="person()"
   [formGroup]="form"
   (clickedSubmit)="onSubmit()"
   (clickedBackwards)="onClickBackwards()"
 ></app-person-update>
+
+}

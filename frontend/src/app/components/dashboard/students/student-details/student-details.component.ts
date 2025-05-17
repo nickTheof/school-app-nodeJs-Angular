@@ -22,7 +22,7 @@ export class StudentDetailsComponent {
     zipcode: '11111',
     address: 'Aitolou',
     streetNum: '56',
-    cityId: 1,
+    city: '1',
   };
 
   // person = undefined;

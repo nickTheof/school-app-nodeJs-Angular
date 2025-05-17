@@ -1,4 +1,14 @@
+@if (showModal()) {
+<app-delete-person-modal
+  (toCancelDelete)="onCancelDelete()"
+  (toConfirmDelete)="onConfirmDelete()"
+>
+</app-delete-person-modal>
+} @if (showSuccessCard()) {
+<app-success-card [title]="successMessage().title"></app-success-card>
+}
 <app-persons-view
-  [personsData]="teachersData"
+  [personsData]="teachersData()"
   [title]="title"
+  (personUuidToDelete)="onTeacherToDeleteModal($event)"
 ></app-persons-view>

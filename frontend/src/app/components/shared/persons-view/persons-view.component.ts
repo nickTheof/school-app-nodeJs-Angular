@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { PersonView } from '../../../shared/interfaces/person';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -16,4 +16,9 @@ export class PersonsViewComponent {
 
   personsData = input.required<PersonView[]>();
   title = input.required<string>();
+  personUuidToDelete = output<string>();
+
+  onDelete(uuid: string) {
+    this.personUuidToDelete.emit(uuid);
+  }
 }

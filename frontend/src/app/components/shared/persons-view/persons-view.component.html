@@ -61,8 +61,11 @@
           >
             <i class="fa-solid fa-pen-to-square"></i>
           </a>
-          <!-- TODO: Modal for user confirmation in delete action -->
-          <a class="text-red-500">
+          <a
+            class="text-red-500 cursor-pointer"
+            type="button"
+            (click)="onDelete(person.uuid)"
+          >
             <i class="fa fa-trash"></i>
           </a>
           }

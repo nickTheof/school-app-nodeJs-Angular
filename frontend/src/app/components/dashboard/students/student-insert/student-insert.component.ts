@@ -34,7 +34,7 @@ export class StudentInsertComponent {
       Validators.required,
       Validators.pattern('^\\d{5,}$'),
     ]),
-    city: new FormControl<number>(1, Validators.required),
+    city: new FormControl<string>('', Validators.required),
   });
 
   formTitle = 'Στοιχεία Μαθητή';

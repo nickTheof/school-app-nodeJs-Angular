@@ -5,18 +5,10 @@
     {{ title() }}
   </h2>
 
-  @if (!personData()) {
-  <app-error-card
-    [error]="{
-      title: 'Σφάλμα!',
-      description: 'Δεν βρέθηκε καταχωρημένο άτομο με το ζητούμενο uuid.'
-    }"
-  ></app-error-card>
-  }
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-base text-gray-800">
     <div class="flex flex-col">
       <span class="font-semibold text-[#762124]">UUID</span>
-      <span>{{ personData()?.uuid }}</span>
+      <span>{{ personData().uuid }}</span>
     </div>
     @for (field of personFields; track field.labelId) {
     <div class="flex flex-col">
@@ -26,8 +18,8 @@
     }
     <div class="flex flex-col">
       <span class="font-semibold text-[#762124]">Πόλη</span>
-      @for (city of cities(); track city.id) { @if (personData()?.cityId
-      ==city.id) {
+      @for (city of cities(); track city._id) { @if (personData().city
+      ==city._id) {
       <span>{{ city.name }}</span>
       } }
     </div>

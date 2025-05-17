@@ -1,81 +1,146 @@
-import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { PersonUpdateComponent } from '../../../shared/person-update/person-update.component';
-import { Person } from '../../../../shared/interfaces/person';
 import { Location } from '@angular/common';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { TeacherService } from '../../../../shared/services/teacher.service';
+import { UiServicesService } from '../../../../shared/services/ui-services.service';
+import { PersonUpdateDTO } from '../../../../shared/interfaces/person';
 
 @Component({
   selector: 'app-teacher-update',
-  imports: [PersonUpdateComponent],
+  standalone: true,
+  imports: [PersonUpdateComponent, ReactiveFormsModule],
   templateUrl: './teacher-update.component.html',
   styleUrl: './teacher-update.component.css',
 })
-export class TeacherUpdateComponent {
+export class TeacherUpdateComponent implements OnInit {
   private location = inject(Location);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private destroyRef = inject(DestroyRef);
+  private teacherService = inject(TeacherService);
+  private uiServices = inject(UiServicesService);
+  person = this.teacherService.teacherDetail;
+  formReady = false;
 
-  teacher: Person = {
-    uuid: '1',
-    firstname: 'Nikolaos',
-    lastname: 'Theofanis',
-    vat: '199199199',
-    fathername: 'Christos',
-    phoneNum: '2102102100',
-    email: 'ntheof@aueb.gr',
-    zipcode: '11111',
-    address: 'Aitolou',
-    streetNum: '56',
-    cityId: 2,
-  };
-
-  // teacher: Person = {
-  //   uuid: '',
-  //   firstname: '',
-  //   lastname: '',
-  //   vat: '',
-  //   fathername: '',
-  //   phoneNum: '',
-  //   email: '',
-  //   zipcode: '',
-  //   address: '',
-  //   streetNum: '',
-  //   cityId: 0,
-  // };
-
-  form = new FormGroup({
-    firstname: new FormControl(this.teacher.firstname, Validators.required),
-    lastname: new FormControl(this.teacher.lastname, Validators.required),
-    vat: new FormControl(this.teacher.vat, [
-      Validators.required,
-      Validators.pattern('^\\d{9}$'),
-    ]),
-    fathername: new FormControl(this.teacher.fathername, Validators.required),
-    phoneNum: new FormControl(this.teacher.phoneNum, [
-      Validators.required,
-      Validators.pattern('^\\d{10,13}$'),
-    ]),
-    email: new FormControl(this.teacher.email, [
-      Validators.required,
-      Validators.email,
-    ]),
-    address: new FormControl(this.teacher.address, Validators.required),
-    streetNum: new FormControl(this.teacher.streetNum, [
-      Validators.required,
-      Validators.pattern('^\\d{1,5}[A-Z]{0,2}$'),
-    ]),
-    zipcode: new FormControl(this.teacher.zipcode, [
-      Validators.required,
-      Validators.pattern('^\\d{5,}$'),
-    ]),
-    city: new FormControl<number>(this.teacher.cityId, Validators.required),
-  });
+  form: FormGroup = new FormGroup({});
 
   formTitle = 'Ενημέρωση Στοιχείων Εκπαιδευτή';
 
+  ngOnInit(): void {
+    const subscription = this.activatedRoute.paramMap.subscribe({
+      next: (val: ParamMap) => {
+        this.uiServices.activateLoading();
+        const uuid = val.get('teacherId') || '';
+
+        this.teacherService.getTeacherByUuid(uuid).subscribe({
+          next: () => {
+            this.uiServices.deactivateLoading();
+            this.uiServices.clearError();
+            this.buildForm();
+          },
+          error: (err) => {
+            this.uiServices.deactivateLoading();
+            this.uiServices.setError({
+              title: 'Σφάλμα!',
+              description: err.error.message,
+            });
+          },
+        });
+      },
+    });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
+  }
+
+  buildForm() {
+    const p = this.person();
+
+    this.form = new FormGroup({
+      firstname: new FormControl(p.firstname, Validators.required),
+      lastname: new FormControl(p.lastname, Validators.required),
+      vat: new FormControl(p.vat, [
+        Validators.required,
+        Validators.pattern('^\\d{9}$'),
+      ]),
+      fathername: new FormControl(p.fathername, Validators.required),
+      phoneNum: new FormControl(p.phoneNum, [
+        Validators.required,
+        Validators.pattern('^\\d{10,13}$'),
+      ]),
+      email: new FormControl(p.email, [Validators.required, Validators.email]),
+      address: new FormControl(p.address, Validators.required),
+      streetNum: new FormControl(p.streetNum, [
+        Validators.required,
+        Validators.pattern('^\\d{1,5}[A-Z]{0,2}$'),
+      ]),
+      zipcode: new FormControl(p.zipcode, [
+        Validators.required,
+        Validators.pattern('^\\d{5,}$'),
+      ]),
+      city: new FormControl<string>(p.city, Validators.required),
+    });
+    this.formReady = true;
+  }
+
   onSubmit() {
-    console.log('http:teachers', this.form);
+    if (this.form.invalid) {
+      this.uiServices.setError({
+        title: 'Σφάλμα!',
+        description: 'Συμπληρώστε σωστά όλα τα πεδία της φόρμας.',
+      });
+      return;
+    }
+
+    this.uiServices.activateLoading();
+    const teacherToUpdate: PersonUpdateDTO = this.getTeacherUpdateDTO();
+
+    this.teacherService
+      .updateTeacher(this.person().uuid, teacherToUpdate)
+      .subscribe({
+        next: () => {
+          this.uiServices.deactivateLoading();
+          this.uiServices.clearError();
+          this.router.navigate(
+            ['/dashboard', 'teachers', 'teacher', this.person().uuid],
+            {
+              replaceUrl: true,
+            }
+          );
+        },
+        error: (err) => {
+          this.form.reset();
+          this.uiServices.deactivateLoading();
+          this.uiServices.setError({
+            title: 'Σφάλμα!',
+            description: err.error.message,
+          });
+        },
+      });
   }
 
   onClickBackwards() {
     this.location.back();
+  }
+
+  private getTeacherUpdateDTO(): PersonUpdateDTO {
+    return {
+      firstname: this.form.value.firstname || '',
+      lastname: this.form.value.lastname || '',
+      vat: this.form.value.vat || '',
+      fathername: this.form.value.fathername || '',
+      phoneNum: this.form.value.phoneNum || '',
+      email: this.form.value.email || '',
+      zipcode: this.form.value.zipcode || '',
+      address: this.form.value.address || '',
+      streetNum: this.form.value.streetNum || '',
+      city: this.form.value.city || '',
+    };
   }
 }

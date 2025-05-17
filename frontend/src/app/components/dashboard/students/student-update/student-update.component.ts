@@ -24,7 +24,7 @@ export class StudentUpdateComponent {
     zipcode: '11111',
     address: 'Aitolou',
     streetNum: '56',
-    cityId: 2,
+    city: '2',
   };
 
   // student: Person = {
@@ -65,7 +65,7 @@ export class StudentUpdateComponent {
       Validators.required,
       Validators.pattern('^\\d{5,}$'),
     ]),
-    city: new FormControl<number>(this.student.cityId, Validators.required),
+    city: new FormControl<string>(this.student.city, Validators.required),
   });
 
   formTitle = 'Ενημέρωση Στοιχείων Μαθητή';

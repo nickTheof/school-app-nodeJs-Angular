@@ -2,6 +2,11 @@
 <div class="flex min-h-[calc(100vh-200px)]">
   <app-desktop-nav></app-desktop-nav>
   <main class="w-full lg:w-4/5">
+    @if (isLoading()) {
+    <app-loading-spinner></app-loading-spinner>
+    } @if (errorExists()) {
+    <app-error-card [error]="errorCard()"></app-error-card>
+    }
     <router-outlet></router-outlet>
   </main>
 </div>

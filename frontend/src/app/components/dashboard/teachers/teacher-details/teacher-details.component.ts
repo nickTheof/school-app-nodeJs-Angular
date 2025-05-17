@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { PersonDetailsComponent } from '../../../shared/person-details/person-details.component';
-import { Person } from '../../../../shared/interfaces/person';
+import { TeacherService } from '../../../../shared/services/teacher.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { UiServicesService } from '../../../../shared/services/ui-services.service';
 
 @Component({
   selector: 'app-teacher-details',
@@ -8,22 +10,37 @@ import { Person } from '../../../../shared/interfaces/person';
   templateUrl: './teacher-details.component.html',
   styleUrl: './teacher-details.component.css',
 })
-export class TeacherDetailsComponent {
+export class TeacherDetailsComponent implements OnInit {
+  private activatedRoute = inject(ActivatedRoute);
+  private destroyRef = inject(DestroyRef);
+  private teacherService = inject(TeacherService);
+  private uiServices = inject(UiServicesService);
+  person = this.teacherService.teacherDetail;
+
+  ngOnInit(): void {
+    const subscription = this.activatedRoute.paramMap.subscribe({
+      next: (val: ParamMap) => {
+        this.uiServices.activateLoading();
+        this.teacherService
+          .getTeacherByUuid(val.get('teacherId') || '')
+          .subscribe({
+            next: () => {
+              this.uiServices.deactivateLoading();
+              this.uiServices.clearError();
+            },
+            error: (err) => {
+              this.uiServices.deactivateLoading();
+              this.uiServices.setError({
+                title: 'Σφάλμα!',
+                description: err.error.message,
+              });
+            },
+          });
+      },
+    });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
+  }
+
   title = 'Στοιχεία Εκπαιδευτή';
-
-  person: Person = {
-    uuid: '1',
-    firstname: 'Nikolaos',
-    lastname: 'Theofanis',
-    vat: '199199199',
-    fathername: 'Christos',
-    phoneNum: '2102102100',
-    email: 'ntheof@aueb.gr',
-    zipcode: '11111',
-    address: 'Aitolou',
-    streetNum: '56',
-    cityId: 1,
-  };
-
-  // person = undefined;
 }
