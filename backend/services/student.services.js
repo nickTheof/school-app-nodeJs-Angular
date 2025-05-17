@@ -1,5 +1,6 @@
 const factory = require("./factory.services");
 const Student = require("../models/student.model");
+const logger = require("../utils/logger");
 
 const MODEL_NAME = "Student";
 
