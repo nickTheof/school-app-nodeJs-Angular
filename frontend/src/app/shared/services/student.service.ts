@@ -5,7 +5,7 @@ import {
   StudentUpdateDTO,
   StudentView,
 } from '../interfaces/student';
-import { Observable, of, tap } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { handleStateUi } from '../utils/handle-ui-state';
 import { UiServicesService } from './ui-services.service';
@@ -101,6 +101,29 @@ export class StudentService {
       }),
       handleStateUi(this.uiServices)
     );
+  }
+
+  getFiltered(filter: {
+    firstname: string;
+    lastname: string;
+  }): Observable<StudentView[]> {
+    return this.http
+      .get<HttpAllStudentsResponse>(
+        `${BASE_API_URL}/filtered?firstname=${filter.firstname}&lastname=${filter.lastname}`
+      )
+      .pipe(
+        handleStateUi(this.uiServices),
+        map((resp) =>
+          resp.data.map((s) => {
+            return {
+              uuid: s.uuid,
+              firstname: s.firstname,
+              lastname: s.lastname,
+              entity: 'student',
+            };
+          })
+        )
+      );
   }
 
   getStudentByUuid(

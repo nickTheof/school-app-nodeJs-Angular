@@ -1,9 +1,10 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { PersonsViewComponent } from '../../../shared/persons-view/persons-view.component';
 import { StudentService } from '../../../../shared/services/student.service';
 import { UiServicesService } from '../../../../shared/services/ui-services.service';
 import { DeletePersonModalComponent } from '../../../shared/delete-person-modal/delete-person-modal.component';
 import { SuccessCardComponent } from '../../../shared/success-card/success-card.component';
+import { Student, StudentView } from '../../../../shared/interfaces/student';
 
 @Component({
   selector: 'app-students-view',
@@ -25,7 +26,15 @@ export class StudentsViewComponent implements OnInit {
   showModal = signal<boolean>(false);
   toDeleteUuid = signal<string>('');
 
-  studentsData = this.studentService.studentsView;
+  private filteredStudents = signal<StudentView[]>([]);
+  private isFiltering = signal<boolean>(false);
+
+  studentsData = computed(() => {
+    return this.isFiltering()
+      ? this.filteredStudents()
+      : this.studentService.studentsView();
+  });
+
   showSuccessCard = this.uiServices.successExists;
   successMessage = this.uiServices.successMessage;
 
@@ -54,6 +63,20 @@ export class StudentsViewComponent implements OnInit {
           title: 'Ο εκπαιδευτής διαγράφηκε με επιτυχία.',
         });
         this.loadStudents(true);
+      },
+    });
+  }
+
+  onFilterCleared() {
+    this.isFiltering.set(false);
+    this.loadStudents(true);
+  }
+
+  onFilterSubmitted(filterObj: { firstname: string; lastname: string }) {
+    this.studentService.getFiltered(filterObj).subscribe({
+      next: (data) => {
+        this.filteredStudents.set(data);
+        this.isFiltering.set(true);
       },
     });
   }
