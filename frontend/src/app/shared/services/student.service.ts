@@ -7,6 +7,8 @@ import {
 } from '../interfaces/student';
 import { Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { handleStateUi } from '../utils/handle-ui-state';
+import { UiServicesService } from './ui-services.service';
 
 interface HttpAllStudentsResponse {
   status: string;
@@ -40,6 +42,8 @@ export const DEFAULT_STUDENT: Student = {
 })
 export class StudentService {
   private http = inject(HttpClient);
+  private uiServices = inject(UiServicesService);
+
   private _studentsCache = signal<Student[]>([]);
   private _lastFetched = signal<number | null>(null);
   private _mapStudentDetailsCache = new Map<string, Student>();
