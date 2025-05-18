@@ -9,6 +9,24 @@ exports.getAllStudents = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getAllFilteredStudents = catchAsync(async (req, res, next) => {
+  const filterObj = req.query;
+  const result = await studentService.getAllFiltered(filterObj);
+  res.status(200).json({
+    status: "success",
+    data: result,
+  });
+});
+
+exports.getAllStudentsPaginated = catchAsync(async (req, res, next) => {
+  const paginationObj = req.query;
+  const result = await studentService.getAllPaginated(paginationObj);
+  res.status(200).json({
+    status: "success",
+    data: result,
+  });
+});
+
 exports.getStudentById = catchAsync(async (req, res, next) => {
   const id = req.params.id;
   const result = await studentService.getOneById(id);
