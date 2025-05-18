@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 export function handleStateUi(ui: UiServicesService) {
   return <T>(source: Observable<T>) =>
-    new Observable((observer) => {
+    new Observable<T>((observer) => {
       ui.activateLoading();
       source
         .pipe(

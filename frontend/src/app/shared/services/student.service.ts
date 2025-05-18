@@ -98,7 +98,8 @@ export class StudentService {
     return this.http.get<HttpAllStudentsResponse>(`${BASE_API_URL}`).pipe(
       tap((resp) => {
         this.setData(resp.data);
-      })
+      }),
+      handleStateUi(this.uiServices)
     );
   }
 
@@ -114,7 +115,8 @@ export class StudentService {
     return this.http.get<HttpStudentResponse>(`${BASE_API_URL}/${uuid}`).pipe(
       tap((resp) => {
         this._mapStudentDetailsCache.set(resp.data.uuid, resp.data);
-      })
+      }),
+      handleStateUi(this.uiServices)
     );
   }
 
@@ -122,7 +124,8 @@ export class StudentService {
     return this.http.post<HttpStudentResponse>(`${BASE_API_URL}`, Student).pipe(
       tap(() => {
         this.invalidateCache();
-      })
+      }),
+      handleStateUi(this.uiServices)
     );
   }
 
@@ -135,7 +138,8 @@ export class StudentService {
       .pipe(
         tap(() => {
           this.invalidateCache();
-        })
+        }),
+        handleStateUi(this.uiServices)
       );
   }
 
@@ -145,7 +149,8 @@ export class StudentService {
       .pipe(
         tap(() => {
           this.invalidateCache();
-        })
+        }),
+        handleStateUi(this.uiServices)
       );
   }
 
