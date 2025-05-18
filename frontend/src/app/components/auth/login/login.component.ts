@@ -11,7 +11,7 @@ import { getError } from '../../../shared/utils/field.validator';
 import { Credentials } from '../../../shared/interfaces/auth';
 import { AuthService } from '../../../shared/services/auth.service';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
-import { ErrorCardComponent } from '../../shared/error-card/error-card.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +20,6 @@ import { ErrorCardComponent } from '../../shared/error-card/error-card.component
     FormControlComponent,
     ReactiveFormsModule,
     LoadingSpinnerComponent,
-    ErrorCardComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -33,13 +32,13 @@ export class LoginComponent {
   isLoading = signal<boolean>(false);
 
   constructor() {
-    effect(() => {
-      if (this.error()) {
-        setTimeout(() => {
-          this.error.set('');
-        }, 4000);
-      }
-    });
+    // effect(() => {
+    //   if (this.error()) {
+    //     setTimeout(() => {
+    //       this.error.set('');
+    //     }, 3000);
+    //   }
+    // });
   }
 
   form = new FormGroup({
@@ -60,9 +59,9 @@ export class LoginComponent {
         this.isLoading.set(false);
         this.router.navigate(['/dashboard'], { replaceUrl: true });
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         this.isLoading.set(false);
-        this.error.set(err.message);
+        this.error.set(err.error.message);
         this.form.reset();
       },
     });

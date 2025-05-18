@@ -20,7 +20,6 @@ import { SuccessCardComponent } from '../../shared/success-card/success-card.com
     RouterLink,
     ReactiveFormsModule,
     FormControlComponent,
-    ErrorCardComponent,
     SuccessCardComponent,
     LoadingSpinnerComponent,
   ],

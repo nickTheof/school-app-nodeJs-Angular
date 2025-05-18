@@ -4,7 +4,7 @@ import { StudentService } from '../../../../shared/services/student.service';
 import { UiServicesService } from '../../../../shared/services/ui-services.service';
 import { DeletePersonModalComponent } from '../../../shared/delete-person-modal/delete-person-modal.component';
 import { SuccessCardComponent } from '../../../shared/success-card/success-card.component';
-import { Student, StudentView } from '../../../../shared/interfaces/student';
+import { StudentView } from '../../../../shared/interfaces/student';
 
 @Component({
   selector: 'app-students-view',
