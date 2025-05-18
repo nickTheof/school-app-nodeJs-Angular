@@ -20,7 +20,7 @@ A full-stack web application designed for managing school personnel such as Teac
 - MongoDB with Mongoose
 - JWT Authentication with Role Verification
 - Generic Factory Service for CRUD operations
-- Zod validation on request payloads
+- Zod validation on request payloads and query params
 - Environment-aware error handling
 
 ---
@@ -45,10 +45,3 @@ A full-stack web application designed for managing school personnel such as Teac
 - TTL expiration and auto-refresh support
 - Shared UI service for error/success/loading state
 
-### 🛠 Developer Experience
-
-- Modular file structure
-- Clear separation of services, components, and interfaces
-- Full support for local dev environment
-
----
