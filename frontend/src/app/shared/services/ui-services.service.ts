@@ -38,14 +38,14 @@ export class UiServicesService {
     this._isLoading.set(false);
   }
 
-  setSuccess(message: { title: string }, timeout = 1500) {
+  setSuccess(message: { title: string }, timeout = 3000) {
     this._successMessage.set(message);
     setTimeout(() => {
       this._successMessage.set(DEFAULT_SUCCESS);
     }, timeout);
   }
 
-  setError(error: ErrorCard, timeout = 1500) {
+  setError(error: ErrorCard, timeout = 1000) {
     this._errorCard.set(error);
     setTimeout(() => {
       this._errorCard.set(DEFAULT_ERROR);
