@@ -26,10 +26,6 @@ export class UiServicesService {
     return this._successMessage()?.title !== '';
   });
 
-  setError(error: ErrorCard) {
-    this._errorCard.set(error);
-  }
-
   clearError() {
     this._errorCard.set(DEFAULT_ERROR);
   }
@@ -42,10 +38,17 @@ export class UiServicesService {
     this._isLoading.set(false);
   }
 
-  setSuccess(message: { title: string }) {
+  setSuccess(message: { title: string }, timeout = 1500) {
     this._successMessage.set(message);
     setTimeout(() => {
       this._successMessage.set(DEFAULT_SUCCESS);
-    }, 3000);
+    }, timeout);
+  }
+
+  setError(error: ErrorCard, timeout = 1500) {
+    this._errorCard.set(error);
+    setTimeout(() => {
+      this._errorCard.set(DEFAULT_ERROR);
+    }, timeout);
   }
 }

@@ -38,7 +38,6 @@ export class PersonUpdateComponent implements OnInit {
     this.cityService.getAll().subscribe({
       next: () => {
         this.uiService.deactivateLoading();
-        this.uiService.clearError();
       },
       error: (err) => {
         this.uiService.deactivateLoading();

@@ -15,7 +15,8 @@ exports.deleteOneById = (id) => factory.deleteOneById(Student, MODEL_NAME, id);
 exports.getOneByUuid = (uuid) => {
   return async () => {
     const doc = await Student.findOne({ uuid: uuid });
-    if (!doc) throw new AppError(`${MODEL_NAME} with uuid ${uuid} not found`);
+    if (!doc)
+      throw new AppError(`${MODEL_NAME} with uuid ${uuid} not found`, 404);
     return doc;
   };
 };
@@ -27,7 +28,8 @@ exports.updateOneByUuid = (uuid, data) => {
       runValidators: true,
     });
 
-    if (!doc) throw new AppError(`${MODEL_NAME} with uuid ${uuid} not found`);
+    if (!doc)
+      throw new AppError(`${MODEL_NAME} with uuid ${uuid} not found`, 404);
 
     logger.info(`${MODEL_NAME} updated`, doc._doc);
     return doc;
@@ -37,7 +39,8 @@ exports.updateOneByUuid = (uuid, data) => {
 exports.deleteOneByUuid = (uuid) => {
   return async () => {
     const doc = await Student.findOneAndDelete({ uuid });
-    if (!doc) throw new AppError(`${MODEL_NAME} with uuid ${uuid} not found`);
+    if (!doc)
+      throw new AppError(`${MODEL_NAME} with uuid ${uuid} not found`, 404);
     logger.info(`${MODEL_NAME} deleted`, doc._doc);
     return doc;
   };

@@ -1,9 +1,39 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { Person, PersonInsertDTO, PersonUpdateDTO } from '../interfaces/person';
-import { tap } from 'rxjs';
+import { computed, inject, Injectable, Signal, signal } from '@angular/core';
+import {
+  Teacher,
+  TeacherInsertDTO,
+  TeacherUpdateDTO,
+  TeacherView,
+} from '../interfaces/teacher';
+import { Observable, of, tap } from 'rxjs';
 
 const BASE_API_URL = 'http://localhost:3000/api/v1/teachers';
+export const DEFAULT_TEACHER: Teacher = {
+  uuid: '',
+  firstname: '',
+  lastname: '',
+  vat: '',
+  fathername: '',
+  phoneNum: '',
+  email: '',
+  zipcode: '',
+  address: '',
+  streetNum: '',
+  city: '',
+};
+
+const ttlMs = 60 * 5 * 1000; // 5 minutes
+
+interface HttpAllTeachersResponse {
+  status: string;
+  data: Teacher[];
+}
+
+interface HttpTeacherResponse {
+  status: string;
+  data: Teacher;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -11,26 +41,17 @@ const BASE_API_URL = 'http://localhost:3000/api/v1/teachers';
 export class TeacherService {
   private http = inject(HttpClient);
 
-  private _teachers = signal<Person[]>([]);
-  private _teacherDetail = signal<Person>({
-    uuid: '',
-    firstname: '',
-    lastname: '',
-    vat: '',
-    fathername: '',
-    phoneNum: '',
-    email: '',
-    zipcode: '',
-    address: '',
-    streetNum: '',
-    city: '',
-  });
+  private _teachersCache = signal<Teacher[]>([]);
+  private _lastFetched = signal<number | null>(null);
+  private _mapTeacherDetailsCache = new Map<string, Teacher>();
 
-  teachers = this._teachers.asReadonly();
-  teacherDetail = this._teacherDetail.asReadonly();
+  private refreshIntervalId: ReturnType<typeof setInterval> | null = null;
+  private autoRefreshStarted = false;
 
-  teachersView = computed(() => {
-    return this._teachers().map((t) => {
+  readonly teachers = this._teachersCache.asReadonly();
+
+  readonly teachersView: Signal<TeacherView[]> = computed(() => {
+    return this._teachersCache().map((t) => {
       return {
         uuid: t.uuid,
         firstname: t.firstname,
@@ -40,43 +61,108 @@ export class TeacherService {
     });
   });
 
-  getAll() {
+  getAll(forceRefresh = false): Observable<HttpAllTeachersResponse> {
+    if (!forceRefresh && !this.isCacheStale()) {
+      return of({ status: 'success', data: [...this.teachers()] });
+    }
+    return this.http.get<HttpAllTeachersResponse>(`${BASE_API_URL}`).pipe(
+      tap((resp) => {
+        this.setData(resp.data);
+      })
+    );
+  }
+
+  getTeacherByUuid(
+    uuid: string,
+    forceRefresh = false
+  ): Observable<HttpTeacherResponse> {
+    const checkCache = this.getByUuid(uuid);
+
+    if (checkCache && !forceRefresh && !this.isCacheStale()) {
+      return of({ status: 'success', data: { ...checkCache } });
+    }
+    return this.http.get<HttpTeacherResponse>(`${BASE_API_URL}/${uuid}`).pipe(
+      tap((resp) => {
+        this._mapTeacherDetailsCache.set(resp.data.uuid, resp.data);
+      })
+    );
+  }
+
+  createTeacher(teacher: TeacherInsertDTO): Observable<HttpTeacherResponse> {
+    return this.http.post<HttpTeacherResponse>(`${BASE_API_URL}`, teacher).pipe(
+      tap(() => {
+        this.invalidateCache();
+      })
+    );
+  }
+
+  updateTeacher(
+    uuid: string,
+    teacher: TeacherUpdateDTO
+  ): Observable<HttpTeacherResponse> {
     return this.http
-      .get<{ status: string; data: Person[] }>(`${BASE_API_URL}`)
+      .patch<HttpTeacherResponse>(`${BASE_API_URL}/${uuid}`, teacher)
       .pipe(
-        tap((resp) => {
-          this._teachers.set(resp.data);
+        tap(() => {
+          this.invalidateCache();
         })
       );
   }
 
-  getTeacherByUuid(uuid: string) {
+  deleteTeacher(uuid: string): Observable<HttpTeacherResponse> {
     return this.http
-      .get<{ status: string; data: Person }>(`${BASE_API_URL}/${uuid}`)
+      .delete<HttpTeacherResponse>(`${BASE_API_URL}/${uuid}`)
       .pipe(
-        tap((resp) => {
-          this._teacherDetail.set(resp.data);
+        tap(() => {
+          this.invalidateCache();
         })
       );
   }
 
-  createTeacher(teacher: PersonInsertDTO) {
-    return this.http.post<{ status: string; data: Person }>(
-      `${BASE_API_URL}`,
-      teacher
-    );
+  private isCacheStale(): boolean {
+    const last = this._lastFetched();
+    return !last || Date.now() - last > ttlMs;
   }
 
-  updateTeacher(uuid: string, teacher: PersonUpdateDTO) {
-    return this.http.patch<{ status: string; data: Person }>(
-      `${BASE_API_URL}/${uuid}`,
-      teacher
-    );
+  private invalidateCache(): void {
+    this._lastFetched.set(null);
+    this.clearCache();
   }
 
-  deleteTeacher(uuid: string) {
-    return this.http.delete<{ status: string; data: Person }>(
-      `${BASE_API_URL}/${uuid}`
-    );
+  private setData(data: Teacher[]): void {
+    this._teachersCache.set(data);
+    this._lastFetched.set(Date.now());
+    data.forEach((t) => {
+      this._mapTeacherDetailsCache.set(t.uuid, { ...t });
+    });
+  }
+
+  private getByUuid(uuid: string): Teacher | undefined {
+    const found = this._mapTeacherDetailsCache.get(uuid);
+    return found ? { ...found } : undefined;
+  }
+
+  private clearCache(): void {
+    this._teachersCache.set([]);
+    this._mapTeacherDetailsCache.clear();
+  }
+
+  startAutoRefresh(): void {
+    if (this.autoRefreshStarted) return;
+    this.autoRefreshStarted = true;
+
+    this.refreshIntervalId = setInterval(() => {
+      if (this.isCacheStale()) {
+        this.getAll(true).subscribe();
+      }
+    }, ttlMs);
+  }
+
+  stopAutoRefresh(): void {
+    if (this.refreshIntervalId) {
+      clearInterval(this.refreshIntervalId);
+      this.refreshIntervalId = null;
+      this.autoRefreshStarted = false;
+    }
   }
 }

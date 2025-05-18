@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,9 +8,16 @@ import {
 import { PersonUpdateComponent } from '../../../shared/person-update/person-update.component';
 import { Location } from '@angular/common';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { TeacherService } from '../../../../shared/services/teacher.service';
+import {
+  TeacherService,
+  DEFAULT_TEACHER,
+} from '../../../../shared/services/teacher.service';
 import { UiServicesService } from '../../../../shared/services/ui-services.service';
-import { PersonUpdateDTO } from '../../../../shared/interfaces/person';
+import {
+  Teacher,
+  TeacherUpdateDTO,
+} from '../../../../shared/interfaces/teacher';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-teacher-update',
@@ -26,7 +33,7 @@ export class TeacherUpdateComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private teacherService = inject(TeacherService);
   private uiServices = inject(UiServicesService);
-  person = this.teacherService.teacherDetail;
+  person = signal<Teacher>(DEFAULT_TEACHER);
   formReady = false;
 
   form: FormGroup = new FormGroup({});
@@ -40,12 +47,12 @@ export class TeacherUpdateComponent implements OnInit {
         const uuid = val.get('teacherId') || '';
 
         this.teacherService.getTeacherByUuid(uuid).subscribe({
-          next: () => {
+          next: (resp) => {
             this.uiServices.deactivateLoading();
-            this.uiServices.clearError();
+            this.person.set(resp.data);
             this.buildForm();
           },
-          error: (err) => {
+          error: (err: HttpErrorResponse) => {
             this.uiServices.deactivateLoading();
             this.uiServices.setError({
               title: 'Σφάλμα!',
@@ -99,7 +106,7 @@ export class TeacherUpdateComponent implements OnInit {
     }
 
     this.uiServices.activateLoading();
-    const teacherToUpdate: PersonUpdateDTO = this.getTeacherUpdateDTO();
+    const teacherToUpdate: TeacherUpdateDTO = this.getTeacherUpdateDTO();
 
     this.teacherService
       .updateTeacher(this.person().uuid, teacherToUpdate)
@@ -114,7 +121,7 @@ export class TeacherUpdateComponent implements OnInit {
             }
           );
         },
-        error: (err) => {
+        error: (err: HttpErrorResponse) => {
           this.form.reset();
           this.uiServices.deactivateLoading();
           this.uiServices.setError({
@@ -129,7 +136,7 @@ export class TeacherUpdateComponent implements OnInit {
     this.location.back();
   }
 
-  private getTeacherUpdateDTO(): PersonUpdateDTO {
+  private getTeacherUpdateDTO(): TeacherUpdateDTO {
     return {
       firstname: this.form.value.firstname || '',
       lastname: this.form.value.lastname || '',

@@ -3,9 +3,10 @@ import { PersonInsertComponent } from '../../../shared/person-insert/person-inse
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { TeacherService } from '../../../../shared/services/teacher.service';
-import { PersonInsertDTO } from '../../../../shared/interfaces/person';
+import { TeacherInsertDTO } from '../../../../shared/interfaces/teacher';
 import { Router } from '@angular/router';
 import { UiServicesService } from '../../../../shared/services/ui-services.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-teacher-insert',
@@ -51,12 +52,11 @@ export class TeacherInsertComponent {
 
   onSubmit() {
     this.uiServices.activateLoading();
-    const teacherToInsert: PersonInsertDTO = this.getTeacherInsertDTO();
+    const teacherToInsert: TeacherInsertDTO = this.getTeacherInsertDTO();
 
     this.teacherService.createTeacher(teacherToInsert).subscribe({
       next: (resp) => {
         this.uiServices.deactivateLoading();
-        this.uiServices.clearError();
         const insertedTeacherUuid = resp.data.uuid;
         this.router.navigate(
           ['/dashboard', 'teachers', 'teacher', insertedTeacherUuid],
@@ -65,7 +65,7 @@ export class TeacherInsertComponent {
           }
         );
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         this.form.reset();
         this.uiServices.deactivateLoading();
         this.uiServices.setError({
@@ -80,7 +80,7 @@ export class TeacherInsertComponent {
     this.location.back();
   }
 
-  private getTeacherInsertDTO(): PersonInsertDTO {
+  private getTeacherInsertDTO(): TeacherInsertDTO {
     return {
       firstname: this.form.value.firstname || '',
       lastname: this.form.value.lastname || '',

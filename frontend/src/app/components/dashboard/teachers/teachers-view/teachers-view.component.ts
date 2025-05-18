@@ -4,6 +4,7 @@ import { TeacherService } from '../../../../shared/services/teacher.service';
 import { UiServicesService } from '../../../../shared/services/ui-services.service';
 import { DeletePersonModalComponent } from '../../../shared/delete-person-modal/delete-person-modal.component';
 import { SuccessCardComponent } from '../../../shared/success-card/success-card.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-teachers-view',
@@ -30,13 +31,17 @@ export class TeachersViewComponent implements OnInit {
   successMessage = this.uiServices.successMessage;
 
   ngOnInit(): void {
+    this.loadTeachers();
+  }
+
+  private loadTeachers(forceRefresh = false) {
     this.uiServices.activateLoading();
-    this.teacherService.getAll().subscribe({
+    this.teacherService.getAll(forceRefresh).subscribe({
       next: () => {
         this.uiServices.deactivateLoading();
         this.uiServices.clearError();
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         this.uiServices.deactivateLoading();
         this.uiServices.setError({
           title: 'Σφάλμα',
@@ -67,17 +72,7 @@ export class TeachersViewComponent implements OnInit {
           title: 'Ο εκπαιδευτής διαγράφηκε με επιτυχία.',
         });
 
-        this.teacherService.getAll().subscribe({
-          next: () => {
-            this.uiServices.clearError();
-          },
-          error: (err) => {
-            this.uiServices.setError({
-              title: 'Σφάλμα',
-              description: err.error.message,
-            });
-          },
-        });
+        this.loadTeachers(true);
       },
     });
   }
