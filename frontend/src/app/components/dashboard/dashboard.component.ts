@@ -6,6 +6,7 @@ import { ErrorCardComponent } from '../shared/error-card/error-card.component';
 import { LoadingSpinnerComponent } from '../shared/loading-spinner/loading-spinner.component';
 import { UiServicesService } from '../../shared/services/ui-services.service';
 import { TeacherService } from '../../shared/services/teacher.service';
+import { StudentService } from '../../shared/services/student.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,11 +23,17 @@ import { TeacherService } from '../../shared/services/teacher.service';
 export class DashboardComponent implements OnInit {
   private uiServices = inject(UiServicesService);
   private teacherService = inject(TeacherService);
+  private studentService = inject(StudentService);
+
   private destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     this.teacherService.startAutoRefresh();
-    this.destroyRef.onDestroy(() => this.teacherService.stopAutoRefresh());
+    this.studentService.startAutoRefresh();
+    this.destroyRef.onDestroy(() => {
+      this.teacherService.stopAutoRefresh();
+      this.studentService.stopAutoRefresh();
+    });
   }
 
   errorExists = this.uiServices.errorExists;

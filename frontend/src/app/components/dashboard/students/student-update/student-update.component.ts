@@ -1,80 +1,133 @@
-import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { PersonUpdateComponent } from '../../../shared/person-update/person-update.component';
-import { Person } from '../../../../shared/interfaces/person';
 import { Location } from '@angular/common';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import {
+  StudentService,
+  DEFAULT_STUDENT,
+} from '../../../../shared/services/student.service';
+import { UiServicesService } from '../../../../shared/services/ui-services.service';
+import {
+  Student,
+  StudentUpdateDTO,
+} from '../../../../shared/interfaces/student';
 
 @Component({
   selector: 'app-student-update',
-  imports: [PersonUpdateComponent],
+  standalone: true,
+  imports: [PersonUpdateComponent, ReactiveFormsModule],
   templateUrl: './student-update.component.html',
   styleUrl: './student-update.component.css',
 })
-export class StudentUpdateComponent {
+export class StudentUpdateComponent implements OnInit {
   private location = inject(Location);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private destroyRef = inject(DestroyRef);
+  private studentService = inject(StudentService);
+  private uiServices = inject(UiServicesService);
+  person = signal<Student>(DEFAULT_STUDENT);
+  formReady = false;
 
-  student: Person = {
-    uuid: '1',
-    firstname: 'Nikolaos',
-    lastname: 'Theofanis',
-    vat: '199199199',
-    fathername: 'Christos',
-    phoneNum: '2102102100',
-    email: 'ntheof@aueb.gr',
-    zipcode: '11111',
-    address: 'Aitolou',
-    streetNum: '56',
-    city: '2',
-  };
-
-  // student: Person = {
-  //   uuid: '',
-  //   firstname: '',
-  //   lastname: '',
-  //   vat: '',
-  //   fathername: '',
-  //   phoneNum: '',
-  //   email: '',
-  //   zipcode: '',
-  //   address: '',
-  //   streetNum: '',
-  //   cityId: 0,
-  // };
-  form = new FormGroup({
-    firstname: new FormControl(this.student.firstname, Validators.required),
-    lastname: new FormControl(this.student.lastname, Validators.required),
-    vat: new FormControl(this.student.vat, [
-      Validators.required,
-      Validators.pattern('^\\d{9}$'),
-    ]),
-    fathername: new FormControl(this.student.fathername, Validators.required),
-    phoneNum: new FormControl(this.student.phoneNum, [
-      Validators.required,
-      Validators.pattern('^\\d{10,13}$'),
-    ]),
-    email: new FormControl(this.student.email, [
-      Validators.required,
-      Validators.email,
-    ]),
-    address: new FormControl(this.student.address, Validators.required),
-    streetNum: new FormControl(this.student.streetNum, [
-      Validators.required,
-      Validators.pattern('^\\d{1,5}[A-Z]{0,2}$'),
-    ]),
-    zipcode: new FormControl(this.student.zipcode, [
-      Validators.required,
-      Validators.pattern('^\\d{5,}$'),
-    ]),
-    city: new FormControl<string>(this.student.city, Validators.required),
-  });
+  form: FormGroup = new FormGroup({});
 
   formTitle = 'Ενημέρωση Στοιχείων Μαθητή';
 
+  ngOnInit(): void {
+    const subscription = this.activatedRoute.paramMap.subscribe({
+      next: (val: ParamMap) => {
+        const uuid = val.get('studentId') || '';
+        this.studentService.getStudentByUuid(uuid).subscribe({
+          next: (resp) => {
+            this.person.set(resp.data);
+            this.buildForm();
+          },
+        });
+      },
+    });
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
+  }
+
+  buildForm() {
+    const p = this.person();
+
+    this.form = new FormGroup({
+      firstname: new FormControl(p.firstname, Validators.required),
+      lastname: new FormControl(p.lastname, Validators.required),
+      vat: new FormControl(p.vat, [
+        Validators.required,
+        Validators.pattern('^\\d{9}$'),
+      ]),
+      fathername: new FormControl(p.fathername, Validators.required),
+      phoneNum: new FormControl(p.phoneNum, [
+        Validators.required,
+        Validators.pattern('^\\d{10,13}$'),
+      ]),
+      email: new FormControl(p.email, [Validators.required, Validators.email]),
+      address: new FormControl(p.address, Validators.required),
+      streetNum: new FormControl(p.streetNum, [
+        Validators.required,
+        Validators.pattern('^\\d{1,5}[A-Z]{0,2}$'),
+      ]),
+      zipcode: new FormControl(p.zipcode, [
+        Validators.required,
+        Validators.pattern('^\\d{5,}$'),
+      ]),
+      city: new FormControl<string>(p.city, Validators.required),
+    });
+    this.formReady = true;
+  }
+
   onSubmit() {
-    console.log('http:students', this.form);
+    if (this.form.invalid) {
+      this.uiServices.setError({
+        title: 'Σφάλμα!',
+        description: 'Συμπληρώστε σωστά όλα τα πεδία της φόρμας.',
+      });
+      return;
+    }
+
+    const studentToUpdate: StudentUpdateDTO = this.getStudentUpdateDTO();
+
+    this.studentService
+      .updateStudent(this.person().uuid, studentToUpdate)
+      .subscribe({
+        next: () => {
+          this.router.navigate(
+            ['/dashboard', 'students', 'student', this.person().uuid],
+            {
+              replaceUrl: true,
+            }
+          );
+        },
+        error: () => {
+          this.form.reset();
+        },
+      });
   }
 
   onClickBackwards() {
     this.location.back();
+  }
+
+  private getStudentUpdateDTO(): StudentUpdateDTO {
+    return {
+      firstname: this.form.value.firstname || '',
+      lastname: this.form.value.lastname || '',
+      vat: this.form.value.vat || '',
+      fathername: this.form.value.fathername || '',
+      phoneNum: this.form.value.phoneNum || '',
+      email: this.form.value.email || '',
+      zipcode: this.form.value.zipcode || '',
+      address: this.form.value.address || '',
+      streetNum: this.form.value.streetNum || '',
+      city: this.form.value.city || '',
+    };
   }
 }
