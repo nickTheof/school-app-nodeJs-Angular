@@ -6,6 +6,9 @@ const AppError = require("../utils/AppError");
 const MODEL_NAME = "Teacher";
 
 exports.getAll = factory.getAll(Teacher);
+exports.getAllFiltered = (filterObj) => factory.getFiltered(Teacher, filterObj);
+exports.getAllPaginated = (paginationObj) =>
+  factory.getAllPaginated(Teacher, paginationObj);
 exports.getOneById = (id) => factory.getOneById(Teacher, MODEL_NAME, id);
 exports.createOne = (data) => factory.createOne(Teacher, MODEL_NAME, data);
 exports.updateOne = (id, data) =>

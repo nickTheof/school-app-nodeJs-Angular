@@ -9,6 +9,24 @@ exports.getAllTeachers = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getAllFilteredTeachers = catchAsync(async (req, res, next) => {
+  const filterObj = req.query;
+  const result = await teacherService.getAllFiltered(filterObj)();
+  res.status(200).json({
+    status: "success",
+    data: result,
+  });
+});
+
+exports.getAllTeachersPaginated = catchAsync(async (req, res, next) => {
+  const paginationObj = req.query;
+  const result = await teacherService.getAllPaginated(paginationObj)();
+  res.status(200).json({
+    status: "success",
+    data: result,
+  });
+});
+
 exports.getTeacherById = catchAsync(async (req, res, next) => {
   const id = req.params.id;
   const result = await teacherService.getOneById(id)();

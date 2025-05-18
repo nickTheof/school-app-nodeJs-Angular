@@ -2,16 +2,30 @@ const express = require("express");
 const teacherController = require("../controllers/teacher.controllers");
 const authMiddleware = require("../middlewares/auth.middleware");
 const validate = require("../middlewares/validate.middleware");
+const validateQuery = require("../middlewares/validateQuery.middleware");
 const {
   teacherSchema,
   partialTeacherSchema,
 } = require("../validators/teacher.schema");
+const filterQuerySchema = require("../validators/filterQuery.schema");
+const { paginationQuerySchema } = require("../validators/pagination.schema");
 
 const router = express.Router();
 
 router.use(authMiddleware.verifyToken);
 // Authenticated + open-access
 router.get("/", teacherController.getAllTeachers);
+router.get(
+  "/filtered",
+  validateQuery(filterQuerySchema),
+  teacherController.getAllFilteredTeachers
+);
+
+router.get(
+  "/paginated",
+  validateQuery(paginationQuerySchema),
+  teacherController.getAllTeachersPaginated
+);
 router.get("/:uuid", teacherController.getTeacherByUuid);
 
 // Admin-only by ID
