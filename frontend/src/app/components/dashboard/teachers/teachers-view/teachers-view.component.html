@@ -11,4 +11,6 @@
   [personsData]="teachersData()"
   [title]="title"
   (personUuidToDelete)="onTeacherToDeleteModal($event)"
+  (filterCleared)="onFilterCleared()"
+  (filterSubmitted)="onFilterSubmitted($event)"
 ></app-persons-view>

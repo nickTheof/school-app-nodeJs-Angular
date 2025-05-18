@@ -1,10 +1,11 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { PersonsViewComponent } from '../../../shared/persons-view/persons-view.component';
 import { TeacherService } from '../../../../shared/services/teacher.service';
 import { UiServicesService } from '../../../../shared/services/ui-services.service';
 import { DeletePersonModalComponent } from '../../../shared/delete-person-modal/delete-person-modal.component';
 import { SuccessCardComponent } from '../../../shared/success-card/success-card.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { TeacherView } from '../../../../shared/interfaces/teacher';
 
 @Component({
   selector: 'app-teachers-view',
@@ -26,7 +27,15 @@ export class TeachersViewComponent implements OnInit {
   showModal = signal<boolean>(false);
   toDeleteUuid = signal<string>('');
 
-  teachersData = this.teacherService.teachersView;
+  private filteredTeachers = signal<TeacherView[]>([]);
+
+  private isFiltering = signal(false);
+  teachersData = computed(() => {
+    return this.isFiltering()
+      ? this.filteredTeachers()
+      : this.teacherService.teachersView();
+  });
+
   showSuccessCard = this.uiServices.successExists;
   successMessage = this.uiServices.successMessage;
 
@@ -73,6 +82,29 @@ export class TeachersViewComponent implements OnInit {
         });
 
         this.loadTeachers(true);
+      },
+    });
+  }
+
+  onFilterCleared() {
+    this.isFiltering.set(false);
+    this.loadTeachers(true);
+  }
+
+  onFilterSubmitted(filterObj: { firstname: string; lastname: string }) {
+    this.uiServices.activateLoading();
+    this.teacherService.getFiltered(filterObj).subscribe({
+      next: (data) => {
+        this.filteredTeachers.set(data);
+        this.isFiltering.set(true);
+        this.uiServices.deactivateLoading();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.uiServices.deactivateLoading();
+        this.uiServices.setError({
+          title: 'Σφάλμα',
+          description: err.error.message,
+        });
       },
     });
   }

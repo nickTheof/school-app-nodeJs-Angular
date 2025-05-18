@@ -6,7 +6,7 @@ import {
   TeacherUpdateDTO,
   TeacherView,
 } from '../interfaces/teacher';
-import { Observable, of, tap } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 
 const BASE_API_URL = 'http://localhost:3000/api/v1/teachers';
 export const DEFAULT_TEACHER: Teacher = {
@@ -116,6 +116,26 @@ export class TeacherService {
         tap(() => {
           this.invalidateCache();
         })
+      );
+  }
+
+  getFiltered(filter: {
+    firstname: string;
+    lastname: string;
+  }): Observable<TeacherView[]> {
+    return this.http
+      .get<HttpAllTeachersResponse>(
+        `${BASE_API_URL}/filtered?firstname=${filter.firstname}&lastname=${filter.lastname}`
+      )
+      .pipe(
+        map((resp) =>
+          resp.data.map((t) => ({
+            uuid: t.uuid,
+            firstname: t.firstname,
+            lastname: t.lastname,
+            entity: 'teacher',
+          }))
+        )
       );
   }
 
