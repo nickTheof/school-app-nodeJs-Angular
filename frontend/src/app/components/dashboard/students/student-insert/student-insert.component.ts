@@ -1,12 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PersonInsertComponent } from '../../../shared/person-insert/person-insert.component';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { StudentService } from '../../../../shared/services/student.service';
 import { StudentInsertDTO } from '../../../../shared/interfaces/student';
 import { Router } from '@angular/router';
-import { UiServicesService } from '../../../../shared/services/ui-services.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-student-insert',
@@ -21,7 +19,6 @@ export class StudentInsertComponent {
   private location = inject(Location);
   private router = inject(Router);
   private studentService = inject(StudentService);
-  private uiServices = inject(UiServicesService);
 
   form = new FormGroup({
     firstname: new FormControl('', Validators.required),

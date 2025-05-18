@@ -8,11 +8,9 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { FormControlComponent } from '../../shared/form-control/form-control.component';
 import { getError, equalValues } from '../../../shared/utils/field.validator';
-import { ErrorCardComponent } from '../../shared/error-card/error-card.component';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { UserInsertDTO } from '../../../shared/interfaces/user';
 import { UserRegistrationService } from '../../../shared/services/user-registration.service';
-import { SuccessCardComponent } from '../../shared/success-card/success-card.component';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +18,6 @@ import { SuccessCardComponent } from '../../shared/success-card/success-card.com
     RouterLink,
     ReactiveFormsModule,
     FormControlComponent,
-    SuccessCardComponent,
     LoadingSpinnerComponent,
   ],
   templateUrl: './register.component.html',
